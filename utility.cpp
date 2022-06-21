@@ -9,7 +9,6 @@
 
 using namespace std;
 
-
 // Vector Operations
 T SqNorm(Vec v)
 {

@@ -10,6 +10,9 @@
 #include "global.h"
 
 
+template <typename type>
+std::string To_string_nDigits(const type a_value, const int n = 6);
+
 /*!
  * Calculates the squared Euclidean norm of the Vec @v
  */

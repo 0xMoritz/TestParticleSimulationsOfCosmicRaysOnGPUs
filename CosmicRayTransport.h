@@ -8,3 +8,6 @@
 #pragma once
 
 #include "global.h"
+
+
+int ParseInput(int argc, char*argv[]);

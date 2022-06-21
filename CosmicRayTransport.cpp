@@ -14,9 +14,10 @@
 //#include "FieldGenerator.h"
 //#include "Engines.h"
 
-using namespace std; //TODO: gamma, E notation, fix totalSimTime display
+using namespace std; //TODO: gamma input with division
 
 string Printer::outputPath{"output/"};
+
 
 int ParseInput(int argc, char*argv[])
 /**
@@ -113,29 +114,29 @@ int ParseInput(int argc, char*argv[])
 		if (argc > 3)
 			seed = atoi(argv[3]);
 		if (argc > 4)
-			R_norm = atof(argv[4]);
+			R_norm = strtod(argv[4], nullptr);
 		if (argc > 5)
-			eta = atof(argv[5]);
+			eta = strtod(argv[5], nullptr);
 		if (argc > 6)
-			gamma = atof(argv[6]);
+			gamma = strtod(argv[6], nullptr);
 		if (argc > 7)
-			modeCount = atoi(argv[7]);
+			modeCount = (int) strtod(argv[7], nullptr);
 		if (argc > 8)
-			fieldCount = atoi(argv[8]);
+			fieldCount = (int) strtod(argv[8], nullptr);
 		if (argc > 9)
-			particlesPerFieldCount = atoi(argv[9]);
+			particlesPerFieldCount = (int) strtod(argv[9], nullptr);
 		if (argc > 10)
-			simulationTimeInGyroperiods = atof(argv[10]);
+			simulationTimeInGyroperiods = strtod(argv[10], nullptr);
 		if (argc > 11)
-			minSimSteps = atoi(argv[11]);
+			minSimSteps = (int) strtod(argv[11], nullptr);
 		if (argc > 12)
-			outputPoints = atoi(argv[12]);
+			outputPoints = (int) strtod(argv[12], nullptr);
 		if (argc > 13)
 			useBoost = atoi(argv[13]);
 		if (argc > 14)
-			Lmin = atof(argv[14]);
+			Lmin = strtod(argv[14], nullptr);
 		if (argc > 15)
-			Lmax = atof(argv[15]);
+			Lmax = strtod(argv[15], nullptr);
 
 		RandomGen* rd = RandomGen::GetInstance();
 		rd->ChangeSeed(seed);
@@ -144,9 +145,9 @@ int ParseInput(int argc, char*argv[])
 	else if (argv[1][0] == 'B' || argv[1][0] == 'b')
 	{
 		if (argc > 3)
-			R_norm = atof(argv[3]);
+			R_norm = strtod(argv[3], nullptr);
 		if (argc > 4)
-			simulationTimeInGyroperiods = atof(argv[4]);
+			simulationTimeInGyroperiods = strtod(argv[4], nullptr);
 		if (argc > 5)
 			minSimSteps = atoi(argv[5]);
 		if (argc > 6)
@@ -159,19 +160,19 @@ int ParseInput(int argc, char*argv[])
 		if (argc > 3)
 			seed = atoi(argv[3]);
 		if (argc > 4)
-			eta = atof(argv[4]);
+			eta = strtod(argv[4], nullptr);
 		if (argc > 5)
-			gamma = atof(argv[5]);
+			gamma = strtod(argv[5], nullptr);
 		if (argc > 6)
-			modeCount = atof(argv[6]);
+			modeCount = strtod(argv[6], nullptr);
 		if (argc > 7)
 			fieldGenerationCount = atoi(argv[7]);
 		if (argc > 8)
 			gridLength = atoi(argv[8]);
 		if (argc > 9)
-			Lmin = atof(argv[9]);
+			Lmin = strtod(argv[9], nullptr);
 		if (argc > 10)
-			Lmax = atof(argv[10]);
+			Lmax = strtod(argv[10], nullptr);
 
 		RandomGen* rd = RandomGen::GetInstance();
 		rd->ChangeSeed(seed);

@@ -47,7 +47,7 @@ void IsotropicTurbulenceSimulation(const T R_norm, const T eta, const T gamma, c
 				+ "\tmodeCount = " + to_string(modeCount) + "\n"
 				+ "\tfieldCount = " + to_string(fieldCount) + "\n"
 				+ "\tparticlePerFieldCount = " + to_string(particlesPerFieldCount) + "\n"
-				+ "\ttotalSimulationTime = " + to_string(totalSimulationTime*omega) + " omega^-1 = " + to_string(totalSimulationTime) + " pc c^-1\n"
+				+ "\ttotalSimulationTime = " + to_string(totalSimulationTime*omega/2/M_PI) + " omega^-1 = " + to_string(totalSimulationTime) + " pc c^-1\n"
 				+ "\tminSimSteps = " + to_string(minSimSteps) + "\n"
 				+ "\toutputPoints = " + to_string(outputPoints) + "\n"
 				+ "\tuseBoost = " + to_string(useBoost) + "\n"

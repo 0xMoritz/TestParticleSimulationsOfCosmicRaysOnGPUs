@@ -19,8 +19,7 @@
 #include <vector>		// As a generic storage medium
 #include <sys/stat.h>
 #include <stdio.h>
-
-
+#include <sstream>
 #include <boost/numeric/odeint.hpp>
 #include <boost/numeric/odeint/external/thrust/thrust.hpp>
 #include <thrust/device_vector.h>
