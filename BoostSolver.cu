@@ -175,6 +175,9 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 
 	// prepare q0 vector
 	Vec q0Vec(6*particleCount);
+	//cout << "maxVecSize=" << std::vector<T>::max_size() << endl;
+	//cout << "maxdoubleVecSize=" << q0Vec.max_size() << endl;
+	//cout << "len(q0Vec)=" << q0Vec.size() << endl;
 	for (int n = 0; n < particleCount; n++)
 	{
 		if (particleCount > 1) // if only one particle is simulated q0 will be set from outside
@@ -187,7 +190,10 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 		q0Vec[5*particleCount + n] = q0[5]; // v_z
 	}
 	StateType q(6*particleCount);
+	//cout << "len(q)=" << q.size() << endl;
 	thrust::copy(q0Vec.begin(), q0Vec.end(), q.begin());
+	//cout << "len(q)=" << q.size() << endl;
+	//cout << "maxStateTypeSize=" << q.max_size() << endl;
 
 	// integrate
 	vector<Vec> trajectory;
@@ -211,7 +217,7 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 	cout << " finished. Time elapsed: " << timeElapsedInSeconds << " s" << endl;
 
 	// Print
-	vector<Printer*> printers;
+	//vector<Printer*> printers;
 	//printers.reserve(particleCount);
 	cout << "Writing to files in '" << Printer::GetOutputPath() << "'..." << flush;
 	// Instantiate Printers
@@ -219,8 +225,30 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 	{
 		string filename = "batch" + to_string(batchNo) + "_particle" + to_string(particle) + ".csv";
 		string header = "t/(OMEGA^-1); x/Lc; y/Lc; z/Lc; v_x/c, v_y/c, v_z/c";
+		Printer printer(filename, header);
+		for (int i = 0; i < outputPoints; i++)
+		{
+			T t = time[i];
+			Vec qVec(trajectory[i]); // Copy construct
+			Vec q7Vec;
+			q7Vec.push_back(t*omega);
+			q7Vec.push_back(qVec[0*particleCount + particle] / Lc);
+			q7Vec.push_back(qVec[1*particleCount + particle] / Lc);
+			q7Vec.push_back(qVec[2*particleCount + particle] / Lc);
+			q7Vec.push_back(qVec[3*particleCount + particle]); // [c]
+			q7Vec.push_back(qVec[4*particleCount + particle]); // [c]
+			q7Vec.push_back(qVec[5*particleCount + particle]); // [c]
+			printer.Write(q7Vec);
+		}
+	}
+	/*for (int particle = 0; particle < particleCount; particle++)
+	{
+		string filename = "batch" + to_string(batchNo) + "_particle" + to_string(particle) + ".csv";
+		string header = "t/(OMEGA^-1); x/Lc; y/Lc; z/Lc; v_x/c, v_y/c, v_z/c";
 		printers.push_back(new Printer(filename, header)); // TODO: how to do this without new?
 	}
+	cout << "len(printers)=" << printers.size() << endl;
+	cout << "maxPrinterVecSize=" << printers.max_size() << endl;
 	// Print data loop first over points and in the inner loop over particles (and printers) such that all printers Write "in parallel"
 	for (int i = 0; i < outputPoints; i++)
 	{
@@ -243,7 +271,7 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 	for (int particle = 0; particle < particleCount; particle++)
 	{
 		delete printers[particle];
-	}
+	}*/
 	cout << "finished writing." << endl;
 	return timeElapsedInSeconds;
 }
