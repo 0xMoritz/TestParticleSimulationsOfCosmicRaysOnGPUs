@@ -84,7 +84,7 @@ void FieldGenerator::GeneratePowerspectrum()
 	int N = (int)1e6;
 	T logFac = pow(kmax/kmin, 1./(N-1)); // [1]
 	//T logFac = pow(kmax/kmin, 1./N); // [1]
-	T k = kmax;//kmin;
+	T k = kmin;
 	T gSum = 0;
 	for (int i=0;i<N;i++) // Numerical integral
 	{
@@ -99,9 +99,9 @@ void FieldGenerator::GeneratePowerspectrum()
 	 * kmin = k(0) = A  => A = kmin
 	 * kmax = k(n-1) = A logFac^(n-1)  => logFac = (kmax/kmin)^(1/(n-1))
 	 */
-	//logFac = pow(kmax/kmin, 1./(n-1)); // Introduce logarithmic scaling again with number of modes n
+	logFac = pow(kmax/kmin, 1./(n-1)); // Introduce logarithmic scaling again with number of modes n
 	//logFac = pow(kmax/kmin, 1./n); // Introduce logarithmic scaling again with number of modes n
-	k = (kmin + kmax)/2.;
+	k = kmin;
 	Vec veck(n); // [pc⁻¹]
 	Vec vecA(n); // [µG]
 	Vec vecg(n); // [µG²·pc]
@@ -109,14 +109,16 @@ void FieldGenerator::GeneratePowerspectrum()
 	modes.reserve(n);
 	for(int i=0;i<n;i++)
 	{
-		T dk = kmax-kmin;//(logFac-1)*k;
+		//T dk = kmax-kmin;
+		T dk = (logFac-1)*k;
 		cout << "dk=" << dk << endl;
 		veck[i] = k;
 		vecg[i] = gFac * pow(k, -gamma);
 		vecA[i] = sqrt( 2.*pow(k, -gamma)*gFac*dk); // <cos²> = 1/2
 		// Apply Amplitude to mode
 		modes.push_back(GenerateMode(k, vecA[i]));
-		//k *= logFac;
+		cout << "k=" << k <<" , kmin=" << kmin << ", kmax=" << kmax << endl;
+		k *= logFac;
 	}
 
 //	// Write powerspectrum:
@@ -174,19 +176,21 @@ Mode FieldGenerator::GenerateMode(T k, T A)
 	// Generate a random direction distributed isotropically (adopted from Kuhlen Eq.2.45)
 	// Generate random unitvector and scale by k:
 	Vec vec_k(3);
-	T phi = rg->RandomFloat_0_2PI();
-	T eta = rg->RandomFloat_m1_1();
+	T phi = 0;//rg->RandomFloat_0_2PI();
+	T eta = 1;//rg->RandomFloat_m1_1();
 	vec_k[0] = sqrt(1-eta*eta) * cos(phi);
 	vec_k[1] = sqrt(1-eta*eta) * sin(phi);
 	vec_k[2] = eta;
 	Scale(vec_k, k);
+	cout << "veck=" << vec_k[0] << ", " << vec_k[1] << ", " << vec_k[2] << endl;
 	// Generate the orthogonal polarization vector from k (adopted from Kuhlen Eq.2.48) and Amplitude A
 	// polarization has to be orthogonal for field to be divergence free
 	Vec vec_Axi(3);
-	T alpha = rg->RandomFloat_0_2PI();
+	T alpha = 0;//rg->RandomFloat_0_2PI();
 	vec_Axi[0] = A*(-sin(alpha)*sin(phi) + cos(alpha)*cos(phi)*eta);
 	vec_Axi[1] = A*( sin(alpha)*cos(phi) + cos(alpha)*sin(phi)*eta);
 	vec_Axi[2] = A*(-sqrt(1-eta*eta)*cos(alpha));
+	cout << "vec_Axi=" << vec_Axi[0] << ", " << vec_Axi[1] << ", " << vec_Axi[2] << endl;
 	// Generate a random Phase distributed uniformally in [0,2 PI]
 	T beta = rg->RandomFloat_0_2PI();
 	// DebugInfo (Check whether vectors are normed correctly): cout << "k=" << k << " Norm |Axi|^2/A^2=" << SqNorm(vec_Axi)/A/A << " Norm |k|^2/k^2=" << SqNorm(vec_k)/k/k << " Scalarproduct vec_Axi·vec_k=" << ScalarProd(vec_Axi, vec_k) << endl;
