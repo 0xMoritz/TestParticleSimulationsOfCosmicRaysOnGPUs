@@ -16,7 +16,7 @@
  * \f$ \eta = \frac{ \langle \delta\vec{B}^2 \rangle }
  * { \langle \delta\vec{B}^2 \rangle + \vec{B}_0^2 } \f$
  */
-void GenerateFields(const T eta, const T gamma, const T Lmin, const T Lmax, const T modeCount, const int fieldCount, const int gridLength);
+void GenerateFields(const T eta, const T gamma, const T Lmin, const T Lmax, const T modeCount, const int fieldCount, const int gridLength, const T evalBoxLenByLmax, const int seed);
 
 
 class Mode
@@ -37,14 +37,15 @@ class FieldGenerator
 private:
 	RandomGen* rg;
 	// stored field:
-	int n; 		// number of modes (background field excluded)
-	T kmin;		// [pc⁻¹]
-	T kmax;		// [pc⁻¹]
-	T dBvar;	// [µG]
-	T B0;		// [µG] strength of the background field parallel to the z axis
-	T eta;		// [1]
-	T gamma;	// [1]
-	T Lc;		// [pc]
+	int n; 				// number of modes (background field excluded)
+	T kmin;				// [pc⁻¹]
+	T kmax;				// [pc⁻¹]
+	T dBvar;			// [µG]
+	T B0;				// [µG] strength of the background field parallel to the z axis
+	T eta;				// [1]
+	T gamma;			// [1]
+	T Lc;				// [pc]
+	T evalBoxLenByLmax; // [1]
 	std::vector<Mode> modes; // stores all the modes
 
 	/*!
@@ -55,7 +56,7 @@ private:
 	/*!
 	 * Calculates the magnetic field values by evaluating the sum of the modes at lattice points
 	 */
-	void EvaluateGrid(std::vector<Vec>& s, const int gridLength) const;
+	void EvaluateGrid(std::vector<Vec>& s, const int gridLength, const T evalBoxLenByLmax) const;
 
 //	/*!
 //	 * Calculates the magnetic field values by evaluating the sum of the modes at randomly chosen points
@@ -100,5 +101,5 @@ public:
 	/*!
 	 * Evaluate a grid and store values in a file
 	 */
-	void EvaluateField(const int gridLength, const std::string filename) const;
+	void EvaluateField(const int gridLength, const T evalBoxLenByLmax, const std::string filename) const;
 };

@@ -41,6 +41,7 @@ int ParseInput(int argc, char*argv[])
 	int seed = 0;
 	T Lmin = 1;							// [pc] inner scale of turbulence
 	T Lmax = 150;						// [pc] outer scale of turbulence
+	T evalBoxLenByLmax = 4;
 
 	// Help messages
 	string errorMsg = "[ERROR] invalid mode input. Type 'h' as argument for help.";
@@ -52,7 +53,7 @@ int ParseInput(int argc, char*argv[])
 			"\t./command b [outputPath] [R_norm] [SimulationTime/gyroperiods] [minSimSteps] [outputPoints]\n";
 	string F_help = "Mode 'f' generates a number of isotropic fields and evaluates these at grid points as output\n"
 			"\t./command f [outputPath] [seed] [eta] [gamma] [modeCount] [GenerationCount]\n"
-			"\t[gridLength] [Lmin/pc] [Lmax/pc]";
+			"\t[gridLength] [Lmin/pc] [Lmax/pc] [evalBoxLen/Lmax]";
 	string H_help = "Simulation of cosmic rays propagating through homogeneous or turbulent magnetic fields as well\n"
 			"as isotropic turbulent field construction for CPUs.\n"
 			"Use './command h' to bring up this help menu, "
@@ -173,10 +174,12 @@ int ParseInput(int argc, char*argv[])
 			Lmin = strtod(argv[9], nullptr);
 		if (argc > 10)
 			Lmax = strtod(argv[10], nullptr);
+		if (argc > 11)
+			evalBoxLenByLmax = strtod(argv[11], nullptr);
 
 		RandomGen* rd = RandomGen::GetInstance();
 		rd->ChangeSeed(seed);
-		GenerateFields(eta, gamma, Lmin, Lmax, modeCount, fieldGenerationCount, gridLength);
+		GenerateFields(eta, gamma, Lmin, Lmax, modeCount, fieldGenerationCount, gridLength, evalBoxLenByLmax, seed);
 	}
 	else
 	{

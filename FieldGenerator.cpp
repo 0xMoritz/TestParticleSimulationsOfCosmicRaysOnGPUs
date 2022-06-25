@@ -10,7 +10,7 @@
 using namespace std;
 
 
-void GenerateFields(const T eta, const T gamma, const T Lmin, const T Lmax, const T modeCount, const int fieldCount, const int gridLength)
+void GenerateFields(const T eta, const T gamma, const T Lmin, const T Lmax, const T modeCount, const int fieldCount, const int gridLength, const T evalBoxLenByLmax, const int seed)
 {
 	// process parameters
 	const T kmin = 2*M_PI/Lmax; 			// [pc⁻¹]
@@ -20,26 +20,41 @@ void GenerateFields(const T eta, const T gamma, const T Lmin, const T Lmax, cons
 	const T dBvar = eta/(1.-eta)*B0*B0; 	// [µG²]
 	FieldGenerator field(modeCount, kmin, kmax, dBvar, B0, eta, gamma, Lc);
 
-	// Output parameters
-	cout << "Parameters:"
-			<< "\n\teta = " << eta
-			<< "\n\tmodeCount = " << modeCount
-			<< "\n\tfieldCount = " << fieldCount
-			<< "\n\tgridLength = " << gridLength
-			<< "\n\tLmin = " << Lmin
-			<< "\n\tLmax = " << Lmax
-			<< "\n\tkmin = " << kmin
-			<< "\n\tkmax = " << kmax
-			<< "\n\tLc = " << Lc
-			<< "\n\tB0 = " << B0
-			<< "\n\tdeltaBvar = " << dBvar << endl;
+	// Print parameters to console and file
+	string parameterText = "Input Parameters:\n"
+				"\tseed = " + to_string(seed) + "\n"
+				"\teta = " + to_string(eta) + "\n"
+				"\tgamma = " + to_string(gamma) + "\n"
+				"\tmodeCount = " + to_string(modeCount) + "\n"
+				"\tfieldCount = " + to_string(fieldCount) + "\n"
+				"\tgridLength = " + to_string(gridLength) + "\n"
+				"\tLmin = " + to_string(Lmin) + " pc\n"
+				"\tLmax = " + to_string(Lmax) + " pc\n"
+				"\tkmin = " + to_string(kmin) + " pc^-1\n"
+				"\tkmax = " + to_string(kmax) + " pc^-1\n"
+				"\n"
+				"\tLc = " + to_string(Lc) + " pc\n"
+				"\tB0 = " + to_string(B0) + " uG\n"
+				"\tdeltaBvar = " + to_string(dBvar) + " uG\n";
+	cout << parameterText;
+	Printer parameterFilePrinter("_info.txt");
+	parameterFilePrinter.Write(parameterText); // Not closing here, last entry will be computation time*/
+
+	// Measure total computation time:
+	const clock_t beginComputingTime = clock();
 
 	// Generate many fields for statistics
 	for (int i = 0; i < fieldCount;i++)
 	{
 		field.Generate();
-		field.EvaluateField(gridLength, "field_" + to_string(i) + ".csv");
+		field.EvaluateField(gridLength, evalBoxLenByLmax, "field_" + to_string(i) + ".csv");
 	}
+
+	// output total computation time and write to file
+	float timeElapsedInSeconds = float(clock() - beginComputingTime) /  CLOCKS_PER_SEC;
+	cout << endl << "\nTotal computation time: " << timeElapsedInSeconds << " s" << endl;
+	parameterFilePrinter.Write("Total computation time = " + to_string(timeElapsedInSeconds) + " s");
+	parameterFilePrinter.CloseFile();
 }
 
 Mode::Mode(Vec Axi_, Vec k_, T beta_)
@@ -111,13 +126,13 @@ void FieldGenerator::GeneratePowerspectrum()
 	{
 		//T dk = kmax-kmin;
 		T dk = (logFac-1)*k;
-		cout << "dk=" << dk << endl;
+		//cout << "dk=" << dk << endl;
 		veck[i] = k;
 		vecg[i] = gFac * pow(k, -gamma);
 		vecA[i] = sqrt( 2.*pow(k, -gamma)*gFac*dk); // <cos²> = 1/2
 		// Apply Amplitude to mode
 		modes.push_back(GenerateMode(k, vecA[i]));
-		cout << "k=" << k <<" , kmin=" << kmin << ", kmax=" << kmax << endl;
+		//cout << "k=" << k <<" , kmin=" << kmin << ", kmax=" << kmax << endl;
 		k *= logFac;
 	}
 
@@ -130,9 +145,9 @@ void FieldGenerator::GeneratePowerspectrum()
 //	}
 //	printer.CloseFile();
 }
-void FieldGenerator::EvaluateGrid(vector<Vec>& fieldPoints, const int gridLength) const
+void FieldGenerator::EvaluateGrid(vector<Vec>& fieldPoints, const int gridLength, const T evalBoxLenByLmax) const
 {
-	T max = 2*M_PI/kmin; // choose 2pi/kmin to incorporate each mode
+	T max = evalBoxLenByLmax * 2*M_PI/kmin; // choose 2pi/kmin to incorporate each mode
 	T dr = max/gridLength;
 	fieldPoints.reserve((size_t)max/dr*max/dr*max/dr);
 	for (T x=0; x<max; x+=dr)
@@ -176,21 +191,21 @@ Mode FieldGenerator::GenerateMode(T k, T A)
 	// Generate a random direction distributed isotropically (adopted from Kuhlen Eq.2.45)
 	// Generate random unitvector and scale by k:
 	Vec vec_k(3);
-	T phi = 0;//rg->RandomFloat_0_2PI();
-	T eta = 1;//rg->RandomFloat_m1_1();
+	T phi = rg->RandomFloat_0_2PI();
+	T eta = rg->RandomFloat_m1_1();
 	vec_k[0] = sqrt(1-eta*eta) * cos(phi);
 	vec_k[1] = sqrt(1-eta*eta) * sin(phi);
 	vec_k[2] = eta;
 	Scale(vec_k, k);
-	cout << "veck=" << vec_k[0] << ", " << vec_k[1] << ", " << vec_k[2] << endl;
+	//cout << "veck=" << vec_k[0] << ", " << vec_k[1] << ", " << vec_k[2] << endl;
 	// Generate the orthogonal polarization vector from k (adopted from Kuhlen Eq.2.48) and Amplitude A
 	// polarization has to be orthogonal for field to be divergence free
 	Vec vec_Axi(3);
-	T alpha = 0;//rg->RandomFloat_0_2PI();
+	T alpha = rg->RandomFloat_0_2PI();
 	vec_Axi[0] = A*(-sin(alpha)*sin(phi) + cos(alpha)*cos(phi)*eta);
 	vec_Axi[1] = A*( sin(alpha)*cos(phi) + cos(alpha)*sin(phi)*eta);
 	vec_Axi[2] = A*(-sqrt(1-eta*eta)*cos(alpha));
-	cout << "vec_Axi=" << vec_Axi[0] << ", " << vec_Axi[1] << ", " << vec_Axi[2] << endl;
+	//cout << "vec_Axi=" << vec_Axi[0] << ", " << vec_Axi[1] << ", " << vec_Axi[2] << endl;
 	// Generate a random Phase distributed uniformally in [0,2 PI]
 	T beta = rg->RandomFloat_0_2PI();
 	// DebugInfo (Check whether vectors are normed correctly): cout << "k=" << k << " Norm |Axi|^2/A^2=" << SqNorm(vec_Axi)/A/A << " Norm |k|^2/k^2=" << SqNorm(vec_k)/k/k << " Scalarproduct vec_Axi·vec_k=" << ScalarProd(vec_Axi, vec_k) << endl;
@@ -221,7 +236,7 @@ void FieldGenerator::Generate()
 	cout << " finished. Time elapsed: " << float(clock() - beginComputingTime) /  CLOCKS_PER_SEC << endl;
 }
 
-void FieldGenerator::EvaluateField(const int gridLength, const string filename) const
+void FieldGenerator::EvaluateField(const int gridLength, const T evalBoxLenByLmax, const string filename) const
 {
 	// Evaluate field:
 	PrintTime();
@@ -229,16 +244,17 @@ void FieldGenerator::EvaluateField(const int gridLength, const string filename) 
 	clock_t beginComputingTime = clock();
 	// Read at grid points and save to file for evaluation of the power spectrum in python
 	vector<Vec> fieldPoints; // Format (x, y, z, B_x, B_y, B_z)^T
-	EvaluateGrid(fieldPoints, gridLength);
+	EvaluateGrid(fieldPoints, gridLength, evalBoxLenByLmax);
 	//EvaluateRandomPoints((int)1e5, fieldPoints);
 	float timeElapsedInSeconds = float(clock() - beginComputingTime) /  CLOCKS_PER_SEC;
 	cout << " finished. Time elapsed: " << timeElapsedInSeconds << endl;
 
 	// Print evaulated grid:
 	PrintTime();
+	cout << "Writing to file..." << flush;
 	//Printer printer(filename, "x/Lc; y/Lc; z/Lc; B_x/µG; B_y/µG; B_z/µG");
 	Printer printer(filename, "x/pc; y/pc; z/pc; B_x/µG; B_y/µG; B_z/µG");
-	printer.Write("eta = " + to_string(eta) + ", modeCount = " + to_string(n) + ", kmin = " + to_string(kmin)
+	printer.Write("gamma = " + to_string(gamma) + "eta = " + to_string(eta) + ", modeCount = " + to_string(n) + ", kmin = " + to_string(kmin)
 			+ ", kmax = " + to_string(kmax) + ", gridLength = " + to_string(gridLength)
 			+ ", Lc = " + to_string(Lc) + ", timeElapsedInSeconds = " + to_string(timeElapsedInSeconds));
 	for(size_t i=0; i<fieldPoints.size(); i++)
@@ -250,6 +266,7 @@ void FieldGenerator::EvaluateField(const int gridLength, const string filename) 
 		printer.Write(fieldPoints[i]);
 	}
 	printer.CloseFile();
+	cout << "finished." << endl;
 }
 
 FieldGenerator::FieldGenerator(const T B0_) // Generate constant

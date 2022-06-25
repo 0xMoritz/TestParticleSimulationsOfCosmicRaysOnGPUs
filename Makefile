@@ -11,7 +11,8 @@ COMMON_FLAGS = -O3 -std=c++14
 NVCC = $(CUDA_ROOT)/bin/nvcc
 
 # NVCC Flags
-NVCC_FLAGS = $(COMMON_FLAGS) -arch $(ARCH)
+NVCC_FLAGS = $(COMMON_FLAGS) -arch $(ARCH) -Xcudafe --diag_suppress=esa_on_defaulted_function_ignored
+
 
 # Gnu C++ Compiler
 #GCC = g++
@@ -48,3 +49,4 @@ PHONY. : clean
 clean:
 	rm -f $(TARGETS)
 	rm -f $(BINARIES)
+
