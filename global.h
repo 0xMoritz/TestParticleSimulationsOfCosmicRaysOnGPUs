@@ -29,7 +29,7 @@
 //#include <thrust/functional.h> //?
 
 // Value type for all calculations
-using T = double;
+using T = float;
 
 // Container for particle state (pos and vel) as well as for magnetic field
 using Vec = std::vector<T>;

@@ -80,43 +80,45 @@ float Engine::Simulation(vector<Vec>& trajectory, Vec& time, int batchNo) // TOD
 	cout << name << " start" << flush;
 	T t = 0; 	// [pc·c⁻¹]
 	// Linear:
-//	for (int i = 0; i < outputPoints; i++)
-//	{
-//		if (i % (outputPoints/10) == 0)
-//			cout << "." << flush;
-//		for (int j = 0; j < stepsPerOutput; j++) // Do more simulation steps than are added to the output file
-//		{
-//			// Simulation step
-//			this->Step(t, q, dqdt, q_out);
-//			t+=dt;
-//			q = q_out;
-//		}
-//	//Write point to storage
-//	trajectory.push_back(q);
-//	time.push_back(t);
-//	}
-	// Logarithmic:
-	while (t <= totalSimulationTime)
+	trajectory.push_back(q); // Write zeroth entry
+	time.push_back(t);
+	for (int i = 0; i < outputPoints-1; i++)
 	{
-		// Simulation step
-		this->Step(t, q, dqdt, q_out);
-		t += dt;
-		q = q_out;
-		while (t > tWrite && t <= totalSimulationTime) // "While" in case one simulation step is smaller then the writing step
+		if (i % (outputPoints/10) == 0)
+			cout << "." << flush;
+		for (int j = 0; j < stepsPerOutput; j++) // Do more simulation steps than are added to the output file
 		{
-			//cout << "tWrite:" << tWrite;
-			numWrites++;
-			if (t > totalSimulationTime*(numWrites/10))
-			{
-				cout << "." << flush;
-				numWrites++;
-			}
-			tWrite *= timePerOutputIncrease;
-			//Write point to storage
-			trajectory.push_back(q);
-			time.push_back(t);
+			// Simulation step
+			this->Step(t, q, dqdt, q_out);
+			t += dt;
+			q = q_out;
 		}
+		//Write point to storage
+		trajectory.push_back(q);
+		time.push_back(t);
 	}
+	// Logarithmic:
+//	while (t <= totalSimulationTime)
+//	{
+//		// Simulation step
+//		this->Step(t, q, dqdt, q_out);
+//		t += dt;
+//		q = q_out;
+//		while (t > tWrite && t <= totalSimulationTime) // "While" in case one simulation step is smaller then the writing step
+//		{
+//			//cout << "tWrite:" << tWrite;
+//			numWrites++;
+//			if (t > totalSimulationTime*(numWrites/10))
+//			{
+//				cout << "." << flush;
+//				numWrites++;
+//			}
+//			tWrite *= timePerOutputIncrease;
+//			//Write point to storage
+//			trajectory.push_back(q);
+//			time.push_back(t);
+//		}
+//	}
 	float timeElapsedInSeconds = float(clock() - beginComputingTime) /  CLOCKS_PER_SEC;
 	cout << " finished. Time elapsed: " << timeElapsedInSeconds << " s" << endl;
 	return timeElapsedInSeconds;

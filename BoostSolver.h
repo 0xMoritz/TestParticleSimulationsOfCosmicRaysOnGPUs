@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Engine.h"
+#include <boost/numeric/odeint/integrate/integrate_n_steps.hpp>
 
 struct DerivativeFunctor
 {

@@ -13,19 +13,12 @@ using namespace std;
 void SimulateBackgroundField(const T R_norm, const T simulationTimeInGyroperiods, const int minSimSteps, const int outputPoints)
 {
 	// Parameter list (units pc,µG,c):
-	// Field related parameters
-	const T kmin = 0.04; 				// [pc⁻¹]
-	//const T kmax = 40; 					// [pc⁻¹]
-	const T Lmax = 2*M_PI/kmin;			// [pc] outer scale of turbulence
-//	cout << "L_max=" << Lmax << endl;	// should be ~ 150pc Kuhlen p.66
-	// Chosen units:
-	const T Lc = Lmax/5; 				// [pc] approximation for correlation length Kuhlen p. 66, Harari et al. eq.2.4ff
 	const T B0 = 4; 					// [µG] strength of background magnetic field
 	const T V = 1;						// [c] absolute velocity of particle
 	// Magnetic field
 	const T B_mean = B0;				// [µG] mean B field
 	// Particle related parameters
-	const T R = R_norm*B_mean*Lc;		// [µG·pc] rigidity of particle
+	const T R = R_norm*B_mean*1;		// [µG·pc] rigidity of particle ??
 	//const T M_Q = R/V; 					// [µG·pc·c⁻¹] mass divided by charge
 	const T Q_M = V/R;					// [c·pc⁻¹·µG⁻¹] charge divided by mass
 	const T omega = Q_M*B_mean;			// [c·pc⁻¹] gyration frequency Ω for the mean Field
@@ -107,31 +100,33 @@ void SimulateBackgroundField(const T R_norm, const T simulationTimeInGyroperiods
 
 	// Writing to file
 	PrintTime();
-	Printer printer("homogeneousBackground.csv", "t*OMEGA; theory: x/Lc; y/Lc; z/Lc; vx/c; vy/c; vz/c; V^2;"
+	string filename = "homogeneousBackground.csv";
+	cout << "Printing to file '" << filename << "'..." << flush;
+	Printer printer(filename, "t*OMEGA; theory: x/pc; y/pc; z/pc; vx/c; vy/c; vz/c; V^2;"
 			"Euler: x; y; z; vx; vy; vz; V^2/c^2;"
-			"Runge-Kutta2: x/Lc; y/Lc; z/Lc; vx/c; vy/c; vz/c; V^2/c^2;"
-			"Runge-Kutta4: x/Lc; y/Lc; z/Lc; vx/c; vy/c; vz/c; V^2/c^2;"
-			"boost ODEint: t*Omega; x/Lc; y/Lc; z/Lc; vx/c; vy/c; vz/c; V^2/c^2");
+			"Runge-Kutta2: x/pc; y/pc; z/pc; vx/c; vy/c; vz/c; V^2/c^2;"
+			"Runge-Kutta4: x/pc; y/pc; z/pc; vx/c; vy/c; vz/c; V^2/c^2;");
+			//"boost ODEint: t*Omega; x/pc; y/pc; z/pc; vx/c; vy/c; vz/c; V^2/c^2");
 	// Write header
 	printer.Write("totalSimulationTime = " + to_string(totalSimulationTime*omega)
 			+ " omega^-1 = " + to_string(totalSimulationTime)
 			+ " pc/c, minSimSteps = " + to_string(minSimSteps)
 			+ ", R = " + to_string(R) + " uG pc"
-			+ ", OMEGA = " + to_string(omega)
-			+ ", Lc = " + to_string(Lc));
+			+ ", OMEGA = " + to_string(omega));
 
 	//TODO: this is suboptimal:
-	int boostPoints = boostTrajectory.size();
-	int outputWrites = min(outputPoints, boostPoints);
+//	int boostPoints = boostTrajectory.size();
+//	int outputWrites = min(outputPoints, boostPoints);
+	int outputWrites = outputPoints;
 
 //	Vec a = theoTrajectory[theoTrajectory.size()-1];
 //	Vec b = boostTrajectory[boostTrajectory.size()-1];
 //	cout << "boostPoints=" << boostPoints << ", outputWrites=" << outputWrites << "theo[-1]=" << a[0] << ", " << a[1] << ", " << a[2] << " boost[-1]=" << b[0] << ", " << b[1] << ", " << b[2] << endl;
 
-	if (outputPoints != boostPoints)
-	{
-		cout << "outputPoints:" << outputPoints << " size of boost trajectory:" << boostPoints << endl;
-	}
+//	if (outputPoints != boostPoints)
+//	{
+//		cout << "outputPoints:" << outputPoints << " size of boost trajectory:" << boostPoints << endl;
+//	}
 //	assert(outputPoints >= boostPoints);
 	for(int i=0;i<outputWrites;i++)
 	{
@@ -140,45 +135,42 @@ void SimulateBackgroundField(const T R_norm, const T simulationTimeInGyroperiods
 		trajectoryList.push_back(theoTime[i]*omega); // [t*omega]=1
 
 		// Add analytical position and energy
-		Scale(theoTrajectory[i], 1./Lc); // [r]=[Lc]
 		AppendVector(trajectoryList, theoTrajectory[i]);
 		trajectoryList.push_back(VV0);
 
 		// Add euler position and energy
 		T eulrKinE = VSquared(eulrTrajectory[i]);
-		Scale(eulrTrajectory[i], 1./Lc); // [r]=[Lc]
 		AppendVector(trajectoryList, eulrTrajectory[i]);
 		trajectoryList.push_back(eulrKinE);
 
 		// Add Runge-Kutta second order position and energy
 		T ruKu2KinE = VSquared(ruKu2Trajectory[i]);
-		Scale(ruKu2Trajectory[i], 1./Lc); // [r]=[Lc]
 		AppendVector(trajectoryList, ruKu2Trajectory[i]);
 		trajectoryList.push_back(ruKu2KinE);
 
 		// Add Runge-Kutta fourth order position and energy
 		T ruKu4KinE = VSquared(ruKu4Trajectory[i]);
-		Scale(ruKu4Trajectory[i], 1./Lc); // [r]=[Lc]
 		AppendVector(trajectoryList, ruKu4Trajectory[i]);
 		trajectoryList.push_back(ruKu4KinE);
 
+		/*
 		// Add Runge-Kutta boost ODEint position and energy
 		if (i < boostPoints)
 		{
 			T boostKinE = VSquared(boostTrajectory[i]);
 			Scale(boostTrajectory[i], 1./Lc); // [r]=[Lc]
-			trajectoryList.push_back(boostTime[i]); // [boostTime] = [t*omega]
 			AppendVector(trajectoryList, boostTrajectory[i]);
 			trajectoryList.push_back(boostKinE);
 		}
 		else
 		{
 			AppendVector(trajectoryList, Vec{0,0,0,0,0,0,0,0});
-		}
+		}*/
 
 		// Write to file and advance time
 		printer.Write(trajectoryList);
 	}
 	printer.CloseFile();
+	cout << "finished." << endl;
 }
 

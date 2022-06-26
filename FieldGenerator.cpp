@@ -271,14 +271,15 @@ void FieldGenerator::EvaluateField(const int gridLength, const T evalBoxLenByLma
 
 FieldGenerator::FieldGenerator(const T B0_) // Generate constant
 {
+	B0 = B0_;
 	n = 0;
 	// The following variables will not be used
 	kmin = 0;
 	kmax = 0;
 	dBvar = 0;
-	B0 = B0_;
 	Lc = 0;
 	eta = 0;
+	modes = {};
 	// modes stays empty but will not be called because n=0
 }
 

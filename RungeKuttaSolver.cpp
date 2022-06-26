@@ -23,6 +23,8 @@ RungeKuttaSolver::RungeKuttaSolver(const T totalSimulationTime_, const int outpu
 {
 	name = "Runge-Kutta Simulation";
 	order = order_;
+	cout.precision(15);
+	cout << endl <<  "Runge Kutta: q0z, R, dt, omega=" << q0_[5] << ", " << R << ", " << dt << ", " << omega_ << endl;
 }
 
 void RungeKuttaSolver::Step(const T t, Vec& q, Vec& dqdt, Vec& q_out)
@@ -41,7 +43,7 @@ void RungeKuttaSolver::RK2(Vec& q, Vec& dqdt, Vec& q_out)
  *
  * k_1 = dt*f(t_n, y_n)								(1)
  * k_2 = dt*f(t_n + 1/2*dt, y_n + 1/2*k_1)			(2)
- * y_{n+1} = y_n + k_2								(3)
+ * y_{n+1} = y_n + k_2								(3) //TODO: THIS IS WRONG???
  */
 {
 	int n = q.size();

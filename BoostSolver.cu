@@ -151,6 +151,7 @@ BoostSolver::BoostSolver(const T totalSimulationTime_, const int outputPoints_, 
 : Engine(totalSimulationTime_, outputPoints_, stepsPerOutput_, dt, R, V_, q0_, field, omega_), particleCount(1), omega(omega_), Lc(0)
 {
 	name = "Runge-Kutta (boost ODEint) Simulation";
+	cout << endl << "Boost: q0z, R, dt, omega=" << q0_[5] << ", " << R << ", " << dt << ", " << omega_ << endl;
 }
 void BoostSolver::Randomize_q0()
 {
@@ -189,6 +190,7 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 		q0Vec[4*particleCount + n] = q0[4]; // v_y
 		q0Vec[5*particleCount + n] = q0[5]; // v_z
 	}
+	cout << "q=" << q0[0] << ", " << q0[1] << ", " << q0[2] << ", " << q0[3] << ", " << q0[4] << ", " << q0[5] << endl;
 	StateType q(6*particleCount);
 	//cout << "len(q)=" << q.size() << endl;
 	thrust::copy(q0Vec.begin(), q0Vec.end(), q.begin());
@@ -201,14 +203,16 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 	boost::numeric::odeint::runge_kutta4<StateType> stepper;
 	LorentzForce lorentzForce(R_inverse, particleCount, field.GetB0(), field.GetModes());
 	Observer observer(trajectory, time);
+
 	for (int i = 0; i < outputPoints; i++)
 	{
-		//size_t steps = boost::numeric::odeint::integrate_const(stepper, lorentzForce, q, 0., totalSimulationTime, dt);//, observer);
-		size_t steps = boost::numeric::odeint::integrate_const(stepper, lorentzForce, q, i*stepsPerOutput*dt, (i+1)*stepsPerOutput*dt, dt);
 		Vec qVec(6*particleCount);
 		//qVec.reserve(6*particleCount);
 		thrust::copy(q.begin(), q.end(), qVec.begin());
 		observer(qVec, i*dt*stepsPerOutput);
+		T time = boost::numeric::odeint::integrate_n_steps(stepper, lorentzForce, q, (T)0., dt, (size_t)stepsPerOutput);//, observer);
+		//size_t steps = boost::numeric::odeint::integrate_const(stepper, lorentzForce, q, i*stepsPerOutput*dt, (i+1)*stepsPerOutput*dt, dt);
+		//cout << "steps, stepsPerOutput" << steps << ", " << stepsPerOutput << endl;
 	}
 
 	// Validate
@@ -225,6 +229,12 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 	{
 		string filename = "batch" + to_string(batchNo) + "_particle" + to_string(particle) + ".csv";
 		string header = "t/(OMEGA^-1); x/Lc; y/Lc; z/Lc; v_x/c, v_y/c, v_z/c";
+		T normFac = 1/Lc;
+		if (Lc == 0) // This case is for the homogeneous background field, where the correlation length would be infinite
+		{
+			header = "t/(OMEGA^-1); x/pc; y/pc; z/pc; v_x/c, v_y/c, v_z/c";
+			normFac = 1;
+		}
 		Printer printer(filename, header);
 		for (int i = 0; i < outputPoints; i++)
 		{
@@ -232,9 +242,9 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 			Vec qVec(trajectory[i]); // Copy construct
 			Vec q7Vec;
 			q7Vec.push_back(t*omega);
-			q7Vec.push_back(qVec[0*particleCount + particle] / Lc);
-			q7Vec.push_back(qVec[1*particleCount + particle] / Lc);
-			q7Vec.push_back(qVec[2*particleCount + particle] / Lc);
+			q7Vec.push_back(qVec[0*particleCount + particle] * normFac);
+			q7Vec.push_back(qVec[1*particleCount + particle] * normFac);
+			q7Vec.push_back(qVec[2*particleCount + particle] * normFac);
 			q7Vec.push_back(qVec[3*particleCount + particle]); // [c]
 			q7Vec.push_back(qVec[4*particleCount + particle]); // [c]
 			q7Vec.push_back(qVec[5*particleCount + particle]); // [c]
