@@ -24,7 +24,7 @@ void SimulateBackgroundField(const T R_norm, const T simulationTimeInGyroperiods
 	const T omega = Q_M*B_mean;			// [c·pc⁻¹] gyration frequency Ω for the mean Field
 //	cout << "OMEGA=" << OMEGA << endl;
 	// Simulation related parameters
-	const T totalSimulationTime = simulationTimeInGyroperiods/omega;	// [pc·c⁻¹] time simulated in the simulation
+	const T totalSimulationTime = simulationTimeInGyroperiods*2*M_PI/omega;	// [pc·c⁻¹] time simulated in the simulation
 	assert(minSimSteps >= outputPoints);
 
 	// Additional parameters for the background field

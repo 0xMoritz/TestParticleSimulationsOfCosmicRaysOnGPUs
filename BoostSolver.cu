@@ -151,7 +151,6 @@ BoostSolver::BoostSolver(const T totalSimulationTime_, const int outputPoints_, 
 : Engine(totalSimulationTime_, outputPoints_, stepsPerOutput_, dt, R, V_, q0_, field, omega_), particleCount(1), omega(omega_), Lc(0)
 {
 	name = "Runge-Kutta (boost ODEint) Simulation";
-	cout << endl << "Boost: q0z, R, dt, omega=" << q0_[5] << ", " << R << ", " << dt << ", " << omega_ << endl;
 }
 void BoostSolver::Randomize_q0()
 {
@@ -190,7 +189,7 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 		q0Vec[4*particleCount + n] = q0[4]; // v_y
 		q0Vec[5*particleCount + n] = q0[5]; // v_z
 	}
-	cout << "q=" << q0[0] << ", " << q0[1] << ", " << q0[2] << ", " << q0[3] << ", " << q0[4] << ", " << q0[5] << endl;
+	//cout << "q=" << q0[0] << ", " << q0[1] << ", " << q0[2] << ", " << q0[3] << ", " << q0[4] << ", " << q0[5] << endl;
 	StateType q(6*particleCount);
 	//cout << "len(q)=" << q.size() << endl;
 	thrust::copy(q0Vec.begin(), q0Vec.end(), q.begin());
