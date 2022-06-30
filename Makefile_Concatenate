@@ -1,0 +1,116 @@
+
+# For parallel processes: ./CosmicRayTransport f ComparisonFieldConfigurations/gL32_Lmax150 1 0.1 100 100 32 1 150 & \./CosmicRayTransport.bin i /data2/gessner/parallelizationRunTimeComparison/1/ 0 0.9 0.1 1.666666666666666 10 30 1 1e4 1e5 1e3 1 1 150
+
+PYTHON = /usr/bin/python3
+CONCATENATESCRIPT = ../analysis/MeanSquaredTrajectory.py
+PLOTSCRIPT = ../analysis/diffusionCoefficientBatches.py
+P = /data2/gessner/parameterConfigurations6/
+FIELDS = 5
+POINTS = 999
+	
+Run : CosmicRayTransport.bin
+	./CosmicRayTransport.bin i $(P)R6_eta02/   1 6 0.2 1.666666666666666 10 10 4096 2e3 2e6 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R6_eta05/   2 6 0.5 1.666666666666666 10 10 4096 2e3 4e6 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R6_eta08/   3 6 0.8 1.666666666666666 10 10 4096 4e3 8e6 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R4_eta02/   4 4 0.2 1.666666666666666 10 10 4096 2e3 3e6 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R4_eta05/   5 4 0.5 1.666666666666666 10 10 4096 2e3 2e6 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R4_eta08/   6 4 0.8 1.666666666666666 10 10 4096 4e3 8e6 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R2_eta02/   7 2 0.2 1.666666666666666 10 10 4096 1e3 1e6 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R2_eta05/   8 2 0.5 1.666666666666666 10 10 4096 2e3 2e6 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R2_eta08/   9 2 0.8 1.666666666666666 10 10 4096 4e3 4e6 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R1_eta02/  10 1 0.2 1.666666666666666 10 10 4096 1e3 5e5 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R1_eta05/  11 1 0.5 1.666666666666666 10 10 4096 2e3 1e6 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R1_eta08/  12 1 0.8 1.666666666666666 10 10 4096 4e3 2e6 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R07_eta02/ 13 0.7 0.2 1.666666666666666 10 10 4096 1e3 5e5 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R07_eta05/ 14 0.7 0.5 1.666666666666666 10 10 4096 2e3 1e6 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R07_eta08/ 15 0.7 0.8 1.666666666666666 10 10 4096 4e3 2e6 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R04_eta02/ 16 0.4 0.2 1.666666666666666 10 10 4096 1e3 6e5 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R04_eta05/ 17 0.4 0.5 1.666666666666666 10 10 4096 2e3 6e5 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R04_eta08/ 18 0.4 0.8 1.666666666666666 10 10 4096 5e3 1e6 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R02_eta02/ 19 0.2 0.2 1.666666666666666 10 10 4096 1e3 2e5 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R02_eta05/ 20 0.2 0.5 1.666666666666666 10 10 4096 2e3 4e5 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R02_eta08/ 21 0.2 0.8 1.666666666666666 10 10 4096 4e3 8e5 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R01_eta02/ 22 0.1 0.2 1.666666666666666 10 10 4096 1e3 2e5 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R01_eta05/ 23 0.1 0.5 1.666666666666666 10 10 4096 2e3 4e5 1e3 1 1 150
+	./CosmicRayTransport.bin i $(P)R01_eta08/ 24 0.1 0.8 1.666666666666666 10 10 4096 4e3 8e5 1e3 1 1 150
+	
+Concatenate:
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R6_eta02/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R6_eta05/ 4096 $(FIELDS) $(POINTS)
+	$(PYTHON) $(CONCATENATESCRIPT) $(P)R6_eta08/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R4_eta02/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R4_eta05/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R4_eta08/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R2_eta02/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R2_eta05/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R2_eta08/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R1_eta02/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R1_eta05/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R1_eta08/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R07_eta02/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R07_eta05/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R07_eta08/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R04_eta02/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R04_eta05/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R04_eta08/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R02_eta02/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R02_eta05/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R02_eta08/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R01_eta02/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R01_eta05/ 4096 $(FIELDS) $(POINTS)
+	#$(PYTHON) $(CONCATENATESCRIPT) $(P)R01_eta08/ 4096 $(FIELDS) $(POINTS)
+	
+Plot:
+	$(PYTHON) $(PLOTSCRIPT) $(P)R6_eta02/ 4096 $(FIELDS) $(POINTS) 6 0.2
+	$(PYTHON) $(PLOTSCRIPT) $(P)R6_eta05/ 4096 $(FIELDS) $(POINTS) 6 0.5
+	$(PYTHON) $(PLOTSCRIPT) $(P)R6_eta08/ 4096 $(FIELDS) $(POINTS) 6 0.8
+	$(PYTHON) $(PLOTSCRIPT) $(P)R4_eta02/ 4096 $(FIELDS) $(POINTS) 4 0.2
+	$(PYTHON) $(PLOTSCRIPT) $(P)R4_eta05/ 4096 $(FIELDS) $(POINTS) 4 0.5
+	$(PYTHON) $(PLOTSCRIPT) $(P)R4_eta08/ 4096 $(FIELDS) $(POINTS) 4 0.8
+	$(PYTHON) $(PLOTSCRIPT) $(P)R2_eta02/ 4096 $(FIELDS) $(POINTS) 2 0.2
+	$(PYTHON) $(PLOTSCRIPT) $(P)R2_eta05/ 4096 $(FIELDS) $(POINTS) 2 0.5
+	$(PYTHON) $(PLOTSCRIPT) $(P)R2_eta08/ 4096 $(FIELDS) $(POINTS) 2 0.8
+	$(PYTHON) $(PLOTSCRIPT) $(P)R1_eta02/ 4096 $(FIELDS) $(POINTS) 1 0.2
+	$(PYTHON) $(PLOTSCRIPT) $(P)R1_eta05/ 4096 $(FIELDS) $(POINTS) 1 0.5
+	$(PYTHON) $(PLOTSCRIPT) $(P)R1_eta08/ 4096 $(FIELDS) $(POINTS) 1 0.8
+	$(PYTHON) $(PLOTSCRIPT) $(P)R07_eta02/ 4096 $(FIELDS) $(POINTS) 7 0.2
+	$(PYTHON) $(PLOTSCRIPT) $(P)R07_eta05/ 4096 $(FIELDS) $(POINTS) 7 0.5
+	$(PYTHON) $(PLOTSCRIPT) $(P)R07_eta08/ 4096 $(FIELDS) $(POINTS) 7 0.8
+	$(PYTHON) $(PLOTSCRIPT) $(P)R04_eta02/ 4096 $(FIELDS) $(POINTS) 4 0.2
+	$(PYTHON) $(PLOTSCRIPT) $(P)R04_eta05/ 4096 $(FIELDS) $(POINTS) 4 0.5
+	$(PYTHON) $(PLOTSCRIPT) $(P)R04_eta08/ 4096 $(FIELDS) $(POINTS) 4 0.8
+	$(PYTHON) $(PLOTSCRIPT) $(P)R02_eta02/ 4096 $(FIELDS) $(POINTS) 2 0.2
+	$(PYTHON) $(PLOTSCRIPT) $(P)R02_eta05/ 4096 $(FIELDS) $(POINTS) 2 0.5
+	$(PYTHON) $(PLOTSCRIPT) $(P)R02_eta08/ 4096 $(FIELDS) $(POINTS) 2 0.8
+	$(PYTHON) $(PLOTSCRIPT) $(P)R01_eta02/ 4096 $(FIELDS) $(POINTS) 1 0.2
+	$(PYTHON) $(PLOTSCRIPT) $(P)R01_eta05/ 4096 $(FIELDS) $(POINTS) 1 0.5
+	$(PYTHON) $(PLOTSCRIPT) $(P)R01_eta08/ 4096 $(FIELDS) $(POINTS) 1 0.8
+	
+
+	
+clean:
+	rm -f $(P)R6_eta02/batch0_particle*.csv
+	rm -f $(P)R6_eta05/batch0_particle*.csv
+	rm -f $(P)R6_eta08/batch0_particle*.csv
+	rm -f $(P)R4_eta02/batch0_particle*.csv
+	rm -f $(P)R4_eta05/batch0_particle*.csv
+	rm -f $(P)R4_eta08/batch0_particle*.csv
+	rm -f $(P)R2_eta02/batch0_particle*.csv
+	rm -f $(P)R2_eta05/batch0_particle*.csv
+	rm -f $(P)R2_eta08/batch0_particle*.csv
+	rm -f $(P)R1_eta02/batch0_particle*.csv
+	rm -f $(P)R1_eta05/batch0_particle*.csv
+	rm -f $(P)R1_eta08/batch0_particle*.csv
+	rm -f $(P)R07_eta02/batch0_particle*.csv
+	rm -f $(P)R07_eta05/batch0_particle*.csv
+	rm -f $(P)R07_eta08/batch0_particle*.csv
+	rm -f $(P)R04_eta02/batch0_particle*.csv
+	rm -f $(P)R04_eta05/batch0_particle*.csv
+	rm -f $(P)R04_eta08/batch0_particle*.csv
+	rm -f $(P)R02_eta02/batch0_particle*.csv
+	rm -f $(P)R02_eta05/batch0_particle*.csv
+	rm -f $(P)R02_eta08/batch0_particle*.csv
+	rm -f $(P)R01_eta02/batch0_particle*.csv
+	rm -f $(P)R01_eta05/batch0_particle*.csv
+	rm -f $(P)R01_eta08/batch0_particle*.csv
+	

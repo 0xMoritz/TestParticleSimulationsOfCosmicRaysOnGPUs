@@ -86,9 +86,10 @@ private:
 	void Randomize_q0();
 	const T omega;
 	const T Lc;
+	const bool logTime;
 
 public:
-	BoostSolver(const int particleCount_, const T totalSimulationTime_, const int outputPoints_, const int stepsPerOutput_, const T dt, const T R, const T V, const FieldGenerator& field, const T omega_, const T Lc_);
+	BoostSolver(const int particleCount_, const T totalSimulationTime_, const int outputPoints_, const int stepsPerOutput_, const T dt, const T R, const T V, const FieldGenerator& field, const T omega_, const T Lc_, const bool logTime_);
 	BoostSolver(const T totalSimulationTime_, const int outputPoints_, const int stepsPerOutput_, const T dt, const T R, const T V, const Vec q0_, const FieldGenerator& field, const T omega_);
 
 	/*!

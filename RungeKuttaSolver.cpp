@@ -52,7 +52,7 @@ void RungeKuttaSolver::RK2(Vec& q, Vec& dqdt, Vec& q_out)
 	{
 		qt[i] = q[i] + 0.5*dt*dqdt[i]; // 			(1)
 	}
-	Derivatives(qt, dqt, field.BField(q));
+	Derivatives(qt, dqt, field.BField(qt));
 	for(int i=0;i<n;i++)
 	{
 		q_out[i] = q[i] + dt*dqt[i]; // 			(2) & (3)

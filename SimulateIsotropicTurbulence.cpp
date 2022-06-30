@@ -10,7 +10,7 @@
 using namespace std;
 
 
-void IsotropicTurbulenceSimulation(const T R_norm, const T eta, const T gamma, const T Lmin, const T Lmax, const int modeCount, const int fieldCount, const int particlesPerFieldCount, const T simulationTimeInGyroperiods, const int minSimSteps, const int outputPoints, const bool useBoost, const int seed)
+void IsotropicTurbulenceSimulation(const T R_norm, const T eta, const T gamma, const T Lmin, const T Lmax, const int modeCount, const int fieldCount, const int particlesPerFieldCount, const T simulationTimeInGyroperiods, const int minSimSteps, const int outputPoints, const bool useBoost, const int seed, const bool logTime)
 {
 	// Parameter list (units pc,µG,c):
 	// Field related parameters // TODO: merge this parameter set with FieldGenerator.cpp: SimulateBackgroundField
@@ -53,12 +53,15 @@ void IsotropicTurbulenceSimulation(const T R_norm, const T eta, const T gamma, c
 				+ "\tuseBoost = " + to_string(useBoost) + "\n"
 				+ "\tLmin = " + to_string(Lmin) + " pc\n"
 				+ "\tLmax = " + to_string(Lmax) + " pc\n"
+				+ "\tlogTime = " + to_string(logTime) + " \n"
 					+ "\n"
 				+ "\tR = " + to_string(R) + " uG pc\n"
 				+ "\tOMEGA = " + to_string(omega) + " c pc\n"
 				+ "\tLc = " + to_string(Lc) + " pc\n"
-				+ "\tdt = " + to_string(dt*omega) + " OMEGA^-1 = " +to_string(dt) + " pc/c\n"
-				+ "\tactualSimSteps = " + to_string(actualSimSteps) + "\n";
+				+ "\tdt = " + to_string(dt*omega) + " OMEGA^-1 = " +to_string(dt) + " pc/c\n";
+	if (!logTime)
+		parameterText += "\tactualSimSteps = " + to_string(actualSimSteps) + "\n";
+
 	cout << parameterText;
 	Printer parameterFilePrinter("_info.txt");
 	parameterFilePrinter.Write(parameterText); // Not closing here, last entry will be computation time
@@ -82,7 +85,7 @@ void IsotropicTurbulenceSimulation(const T R_norm, const T eta, const T gamma, c
 		if (useBoost)
 		{
 			// Simulation using Boost ODEint
-			engine = new BoostSolver(particlesPerFieldCount, totalSimulationTime, outputPoints, stepsPerOutput, dt, R, V, field, omega, Lc);
+			engine = new BoostSolver(particlesPerFieldCount, totalSimulationTime, outputPoints, stepsPerOutput, dt, R, V, field, omega, Lc, logTime);
 		}
 		else
 		{

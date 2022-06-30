@@ -142,13 +142,13 @@ void Observer::operator()(const Vec& q, T t)
 
 
 // Boost Solver //
-BoostSolver::BoostSolver(const int particleCount_, const T totalSimulationTime_, const int outputPoints_, const int stepsPerOutput_, const T dt, const T R, const T V_, const FieldGenerator& field, const T omega_, const T Lc_)
-: Engine(totalSimulationTime_, outputPoints_, stepsPerOutput_, dt, R, V_, field, omega_), particleCount(particleCount_), omega(omega_), Lc(Lc_)
+BoostSolver::BoostSolver(const int particleCount_, const T totalSimulationTime_, const int outputPoints_, const int stepsPerOutput_, const T dt, const T R, const T V_, const FieldGenerator& field, const T omega_, const T Lc_, const bool logTime_)
+: Engine(totalSimulationTime_, outputPoints_, stepsPerOutput_, dt, R, V_, field, omega_), particleCount(particleCount_), omega(omega_), Lc(Lc_), logTime(logTime_)
 {
 	name = "Runge-Kutta (boost ODEint) Simulation";
 }
 BoostSolver::BoostSolver(const T totalSimulationTime_, const int outputPoints_, const int stepsPerOutput_, const T dt, const T R, const T V_, const Vec q0_, const FieldGenerator& field, const T omega_)
-: Engine(totalSimulationTime_, outputPoints_, stepsPerOutput_, dt, R, V_, q0_, field, omega_), particleCount(1), omega(omega_), Lc(0)
+: Engine(totalSimulationTime_, outputPoints_, stepsPerOutput_, dt, R, V_, q0_, field, omega_), particleCount(1), omega(omega_), Lc(0), logTime(0)
 {
 	name = "Runge-Kutta (boost ODEint) Simulation";
 }
@@ -203,16 +203,56 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 	LorentzForce lorentzForce(R_inverse, particleCount, field.GetB0(), field.GetModes());
 	Observer observer(trajectory, time);
 
+	T t2 = 0; // Time steps, one integration call integrates from t1 to t2
+	T t1 = 0;
+	T timeStep = 0; // linear or logarithmic
+	if (logTime)
+	{
+		t1 = 1/(omega);
+		timeStep = pow(totalSimulationTime/t1, 1./outputPoints);
+	}
+	else // linear
+	{
+		t1 = dt*stepsPerOutput;
+		timeStep = dt*stepsPerOutput;
+	}
+
 	for (int i = 0; i < outputPoints; i++)
 	{
+		if (i % (outputPoints/50) == 0)
+			cout << "." << flush;
+		if (logTime)
+		{
+			t2 = t1*timeStep;
+		}
+		else // linear
+		{
+			t2 = t1+timeStep;
+		}
+
 		Vec qVec(6*particleCount);
 		//qVec.reserve(6*particleCount);
 		thrust::copy(q.begin(), q.end(), qVec.begin());
-		observer(qVec, i*dt*stepsPerOutput);
-		T time = boost::numeric::odeint::integrate_n_steps(stepper, lorentzForce, q, (T)0., dt, (size_t)stepsPerOutput);//, observer);
-		//size_t steps = boost::numeric::odeint::integrate_const(stepper, lorentzForce, q, i*stepsPerOutput*dt, (i+1)*stepsPerOutput*dt, dt);
+		observer(qVec, t1);
+
+		//Use this for background Field
+		//T time = boost::numeric::odeint::integrate_n_steps(stepper, lorentzForce, q, (T)0., dt, (size_t)stepsPerOutput);//, observer);
+		T t1_ = t1; // This integration step start time
+		T t2_ = t2; // This integration step end time
+		T dt_ = dt; // For reducing the step size at the beginning to resolve the time before one gyroperiod
+		if (t1*omega < 6)
+		{
+			dt_ = min((t2-t1)/20., dt);
+		}
+		//T T_ = 2*M_PI/omega;
+		size_t steps = boost::numeric::odeint::integrate_const(stepper, lorentzForce, q, t1_, t2_, dt_);
+		//cout << "T, t1, t2, t1_, t2_, dt, dt_, steps " << T_ << ", " << t1 << ", " << t2 << ", " << t1_ << ", " << t2_ << ", " << dt << ", " << dt_ << ", " << steps << endl;
+		//cout << "q0, q1, q2 " << q[0] << ", " << q[1] << ", " << q[2] << endl;
 		//cout << "steps, stepsPerOutput" << steps << ", " << stepsPerOutput << endl;
+
+		t1 = t2;
 	}
+	cout << "totalSimulationTime = " << totalSimulationTime << ", actualSimulationTime = " << t1 << endl;
 
 	// Validate
 	assert(trajectory.size() == time.size());

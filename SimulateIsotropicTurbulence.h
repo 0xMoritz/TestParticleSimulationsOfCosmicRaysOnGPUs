@@ -32,5 +32,5 @@
  * 	@MINSIMSTEPS: minimum number of integration steps per particle
  * 	@OUTPUTPOINTS: number of output lines generated
  */
-void IsotropicTurbulenceSimulation(const T R_norm, const T eta, const T gamma, const T Lmin, const T Lmax, const int modeCount, const int fieldCount, const int particlesPerFieldCount, const T SimulationTimeInGyrationCycles, const int minSimSteps, const int outputPoints, const bool useBoost, const int seed);
+void IsotropicTurbulenceSimulation(const T R_norm, const T eta, const T gamma, const T Lmin, const T Lmax, const int modeCount, const int fieldCount, const int particlesPerFieldCount, const T SimulationTimeInGyrationCycles, const int minSimSteps, const int outputPoints, const bool useBoost, const int seed, const bool logTime);
 

@@ -41,6 +41,7 @@ int ParseInput(int argc, char*argv[])
 	int seed = 0;
 	T Lmin = 1;							// [pc] inner scale of turbulence
 	T Lmax = 150;						// [pc] outer scale of turbulence
+	bool logTime = 1;
 	T evalBoxLenByLmax = 4;
 
 	// Help messages
@@ -48,7 +49,7 @@ int ParseInput(int argc, char*argv[])
 	string I_help = "Mode 'i' simulates a series of particles in an isotropic field\n"
 			"\t./command i [outputPath] [seed] [R_norm] [eta] [gamma] [modeCount] [fieldCount] "
 			"\n\t[particlePerFieldCount] [SimulationTime/gyroperiods] [minSimSteps] "
-			"\n\t[outputPoints] [useBoost (1 or 0)] [Lmin/pc] [Lmax/pc]\n";
+			"\n\t[outputPoints] [useBoost (1 or 0)] [Lmin/pc] [Lmax/pc] [logTime (1 or 0)]\n";
 	string B_help = "Mode 'b' simulates one particle in a background field using various methods\n"
 			"\t./command b [outputPath] [R_norm] [SimulationTime/gyroperiods] [minSimSteps] [outputPoints]\n";
 	string F_help = "Mode 'f' generates a number of isotropic fields and evaluates these at grid points as output\n"
@@ -138,10 +139,12 @@ int ParseInput(int argc, char*argv[])
 			Lmin = strtod(argv[14], nullptr);
 		if (argc > 15)
 			Lmax = strtod(argv[15], nullptr);
+		if (argc > 16)
+			logTime = atoi(argv[16]);
 
 		RandomGen* rd = RandomGen::GetInstance();
 		rd->ChangeSeed(seed);
-		IsotropicTurbulenceSimulation(R_norm, eta, gamma, Lmin, Lmax, modeCount, fieldCount, particlesPerFieldCount, simulationTimeInGyroperiods, minSimSteps, outputPoints, useBoost, seed);
+		IsotropicTurbulenceSimulation(R_norm, eta, gamma, Lmin, Lmax, modeCount, fieldCount, particlesPerFieldCount, simulationTimeInGyroperiods, minSimSteps, outputPoints, useBoost, seed, logTime);
 	}
 	else if (argv[1][0] == 'B' || argv[1][0] == 'b')
 	{
