@@ -4,9 +4,9 @@
 PYTHON = /usr/bin/python3
 CONCATENATESCRIPT = ../analysis/MeanSquaredTrajectory.py
 PLOTSCRIPT = ../analysis/diffusionCoefficientBatches.py
-P = /data2/gessner/parameterConfigurations6/
+P = /data2/gessner/parameterConfigurations7/
 NMODES = 128
-FIELDS = 10
+FIELDS = 5
 POINTS = 1000
 NPARTICLES = 3072
 

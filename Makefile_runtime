@@ -1,0 +1,44 @@
+
+# For parallel processes: ./CosmicRayTransport f ComparisonFieldConfigurations/gL32_Lmax150 1 0.1 100 100 32 1 150 & \./CosmicRayTransport.bin i /data2/gessner/parallelizationRunTimeComparison/1/ 0 0.9 0.1 1.666666666666666 10 30 1 1e4 1e5 1e3 1 1 150
+
+#./command i [outputPath] [seed] [R_norm] [eta] [gamma] [modeCount] [fieldCount] 
+# [particlePerFieldCount] [SimulationTime/gyroperiods] [minSimSteps] 
+# [outputPoints] [useBoost (1 or 0)] [Lmin/pc] [Lmax/pc] [logTime (1 or 0)]
+
+GAMMA = 1.666666666666666
+
+RunCPU : CosmicRayTransport_CPU.bin
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/1/     0 0.9 0.5 $(GAMMA) 128 1     1 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/2/     0 0.9 0.5 $(GAMMA) 128 1     2 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/4/     0 0.9 0.5 $(GAMMA) 128 1     4 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/8/     0 0.9 0.5 $(GAMMA) 128 1     8 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/16/    0 0.9 0.5 $(GAMMA) 128 1    16 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/32/    0 0.9 0.5 $(GAMMA) 128 1    32 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/64/    0 0.9 0.5 $(GAMMA) 128 1    64 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/128/   0 0.9 0.5 $(GAMMA) 128 1   128 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/256/   0 0.9 0.5 $(GAMMA) 128 1   256 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/512/   0 0.9 0.5 $(GAMMA) 128 1   512 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/1024/  0 0.9 0.5 $(GAMMA) 128 1  1024 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/2048/  0 0.9 0.5 $(GAMMA) 128 1  2048 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/4096/  0 0.9 0.5 $(GAMMA) 128 1  4096 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/8192/  0 0.9 0.5 $(GAMMA) 128 1  8192 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/16384/ 0 0.9 0.5 $(GAMMA) 128 1 16384 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/32768/ 0 0.9 0.5 $(GAMMA) 128 1 32768 1e2 1e3 1e3 1 1 150 1
+	
+RunGPU : CosmicRayTransport_GPU.bin
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/1/     0 0.9 0.5 $(GAMMA) 128 1     1 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/2/     0 0.9 0.5 $(GAMMA) 128 1     2 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/4/     0 0.9 0.5 $(GAMMA) 128 1     4 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/8/     0 0.9 0.5 $(GAMMA) 128 1     8 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/16/    0 0.9 0.5 $(GAMMA) 128 1    16 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/32/    0 0.9 0.5 $(GAMMA) 128 1    32 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/64/    0 0.9 0.5 $(GAMMA) 128 1    64 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/128/   0 0.9 0.5 $(GAMMA) 128 1   128 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/256/   0 0.9 0.5 $(GAMMA) 128 1   256 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/512/   0 0.9 0.5 $(GAMMA) 128 1   512 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/1024/  0 0.9 0.5 $(GAMMA) 128 1  1024 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/2048/  0 0.9 0.5 $(GAMMA) 128 1  2048 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/4096/  0 0.9 0.5 $(GAMMA) 128 1  4096 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/8192/  0 0.9 0.5 $(GAMMA) 128 1  8192 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/16384/ 0 0.9 0.5 $(GAMMA) 128 1 16384 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/32768/ 0 0.9 0.5 $(GAMMA) 128 1 32768 1e2 1e3 1e3 1 1 150 1
