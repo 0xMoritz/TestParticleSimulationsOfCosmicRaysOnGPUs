@@ -14,21 +14,21 @@ void IsotropicTurbulenceSimulation(const T R_norm, const T eta, const T gamma, c
 {
 	// Parameter list (units pc,µG,c):
 	// Field related parameters // TODO: merge this parameter set with FieldGenerator.cpp: SimulateBackgroundField
-	const T kmin = 2*M_PI/Lmax; 		// [pc⁻¹]
-	const T kmax = 2*M_PI/Lmin; 		// [pc⁻¹]
-//	cout << "L_max=" << Lmax << endl;	// should be ~ 150pc Kuhlen p.66
+	const T kmin = 2*M_PI/Lmax; 			// [pc⁻¹]
+	const T kmax = 2*M_PI/Lmin; 			// [pc⁻¹]
+//	cout << "L_max=" << Lmax << endl;		// should be ~ 150pc Kuhlen p.66
 	// Chosen units:
-	const T Lc = Lmax/5; 				// [pc] approximation for correlation length Kuhlen p. 66, Harari et al. eq.2.4ff
-	const T B0 = 4; 					// [µG] strength of background magnetic field
-	const T V = 1;						// [c] velocity
+	const T Lc = Lmax/5; 					// [pc] approximation for correlation length Kuhlen p. 66, Harari et al. eq.2.4ff
+	const T V = 1;							// [c] velocity
+	const T B_mean = 4; 						// [µG] strength of background magnetic field
+	const T B0 = sqrt((1-eta)*B_mean*B_mean);	// [µG] mean B field
+	const T dBvar = eta*B_mean*B_mean;			// [(µG)²] variance of turbulent field
 	// Magnetic field
-	const T dBvar = eta/(1.-eta)*B0*B0;	// [(µG)²] variance of turbulent field
 	//cout << "dBvar = " << dBvar << endl;
-	const T B_mean = sqrt(B0*B0+dBvar);	// [µG] mean B field
 	// Particle related parameters
-	const T R = R_norm*B_mean*Lc;		// [µG·pc] rigidity of particle
-	const T Q_M = V/R;					// [c·pc⁻¹·µG⁻¹] charge divided by mass
-	const T omega = Q_M*B_mean;			// [c·pc⁻¹] gyration frequency Ω for the mean Field
+	const T R = R_norm*B_mean*Lc;			// [µG·pc] rigidity of particle
+	const T Q_M = V/R;						// [c·pc⁻¹·µG⁻¹] charge divided by mass
+	const T omega = Q_M*B_mean;				// [c·pc⁻¹] gyration frequency Ω for the mean Field
 //	cout << "OMEGA=" << OMEGA << endl;
 
 	// Composite parameters

@@ -4,95 +4,146 @@
 PYTHON = /usr/bin/python3
 CONCATENATESCRIPT = ../analysis/MeanSquaredTrajectory.py
 PLOTSCRIPT = ../analysis/diffusionCoefficientBatches.py
-P = /data2/gessner/parameterConfigurations7/
+P7 = /data2/gessner/parameterConfigurations7/
+P8 = /data2/gessner/parameterConfigurations8/
+P9 = /data2/gessner/parameterConfigurations9/
 NMODES = 128
 FIELDS = 5
 POINTS = 1000
 NPARTICLES = 3072
+GAMMA = 1.666666666666666
 
 # ./command i [outputPath] [seed] [R_norm] [eta] [gamma] [modeCount] [fieldCount] 
 # [particlePerFieldCount] [SimulationTime/gyroperiods] [minSimSteps] 
 # [outputPoints] [useBoost (1 or 0)] [Lmin/pc] [Lmax/pc] [logTime (1 or 0]
 	
-Run : CosmicRayTransport.bin
-	./CosmicRayTransport.bin i $(P)R6_eta02/   1 6 0.2 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 2e6 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R6_eta05/   2 6 0.5 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 4e6 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R6_eta08/   3 6 0.8 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 8e6 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R4_eta02/   4 4 0.2 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 3e6 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R4_eta05/   5 4 0.5 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 2e6 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R4_eta08/   6 4 0.8 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 8e6 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R2_eta02/   7 2 0.2 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 1e3 1e6 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R2_eta05/   8 2 0.5 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 2e6 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R2_eta08/   9 2 0.8 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 4e6 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R1_eta02/  10 1 0.2 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 1e3 5e5 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R1_eta05/  11 1 0.5 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 1e6 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R1_eta08/  12 1 0.8 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 2e6 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R07_eta02/ 13 0.7 0.2 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 1e3 5e5 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R07_eta05/ 14 0.7 0.5 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 1e6 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R07_eta08/ 15 0.7 0.8 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 2e6 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R04_eta02/ 16 0.4 0.2 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 1e3 6e5 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R04_eta05/ 17 0.4 0.5 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 6e5 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R04_eta08/ 18 0.4 0.8 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 5e3 1e6 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R02_eta02/ 19 0.2 0.2 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 1e3 2e5 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R02_eta05/ 20 0.2 0.5 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R02_eta08/ 21 0.2 0.8 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 8e5 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R01_eta02/ 22 0.1 0.2 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 1e3 2e5 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R01_eta05/ 23 0.1 0.5 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
-	./CosmicRayTransport.bin i $(P)R01_eta08/ 24 0.1 0.8 1.666666666666666 $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 8e5 1e3 1 1 150 1
-	
-Concatenate:
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R6_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R6_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R6_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R4_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R4_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R4_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R2_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R2_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R2_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R1_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R1_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R1_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R07_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R07_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R07_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R04_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R04_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R04_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R02_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R02_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R02_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R01_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R01_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	$(PYTHON) $(CONCATENATESCRIPT) $(P)R01_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS)
-	
-Plot:
-	$(PYTHON) $(PLOTSCRIPT) $(P)R6_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS) 6 0.2
-	$(PYTHON) $(PLOTSCRIPT) $(P)R6_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS) 6 0.5
-	$(PYTHON) $(PLOTSCRIPT) $(P)R6_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS) 6 0.8
-	$(PYTHON) $(PLOTSCRIPT) $(P)R4_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS) 4 0.2
-	$(PYTHON) $(PLOTSCRIPT) $(P)R4_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS) 4 0.5
-	$(PYTHON) $(PLOTSCRIPT) $(P)R4_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS) 4 0.8
-	$(PYTHON) $(PLOTSCRIPT) $(P)R2_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS) 2 0.2
-	$(PYTHON) $(PLOTSCRIPT) $(P)R2_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS) 2 0.5
-	$(PYTHON) $(PLOTSCRIPT) $(P)R2_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS) 2 0.8
-	$(PYTHON) $(PLOTSCRIPT) $(P)R1_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS) 1 0.2
-	$(PYTHON) $(PLOTSCRIPT) $(P)R1_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS) 1 0.5
-	$(PYTHON) $(PLOTSCRIPT) $(P)R1_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS) 1 0.8
-	$(PYTHON) $(PLOTSCRIPT) $(P)R07_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS) 7 0.2
-	$(PYTHON) $(PLOTSCRIPT) $(P)R07_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS) 7 0.5
-	$(PYTHON) $(PLOTSCRIPT) $(P)R07_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS) 7 0.8
-	$(PYTHON) $(PLOTSCRIPT) $(P)R04_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS) 4 0.2
-	$(PYTHON) $(PLOTSCRIPT) $(P)R04_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS) 4 0.5
-	$(PYTHON) $(PLOTSCRIPT) $(P)R04_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS) 4 0.8
-	$(PYTHON) $(PLOTSCRIPT) $(P)R02_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS) 2 0.2
-	$(PYTHON) $(PLOTSCRIPT) $(P)R02_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS) 2 0.5
-	$(PYTHON) $(PLOTSCRIPT) $(P)R02_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS) 2 0.8
-	$(PYTHON) $(PLOTSCRIPT) $(P)R01_eta02/ $(NPARTICLES) $(FIELDS) $(POINTS) 1 0.2
-	$(PYTHON) $(PLOTSCRIPT) $(P)R01_eta05/ $(NPARTICLES) $(FIELDS) $(POINTS) 1 0.5
-	$(PYTHON) $(PLOTSCRIPT) $(P)R01_eta08/ $(NPARTICLES) $(FIELDS) $(POINTS) 1 0.8
-	
+RunHD : CosmicRayTransport.bin
+	./CosmicRayTransport.bin i /data2/gessner/HD/2/R1_eta05/ 0 1 0.5 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 1e6 1e4 1 1 150 1
 
+	
+RunParams : CosmicRayTransport.bin
+	./CosmicRayTransport.bin i $(P9)R01_eta02/  0 0.1 0.2 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 1e4 2e6 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R02_eta02/  1 0.2 0.2 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 1e3 2e5 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R04_eta02/  2 0.4 0.2 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 1e3 6e5 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R07_eta02/  3 0.7 0.2 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 1e3 5e5 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R1_eta02/   4   1 0.2 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 1e3 5e5 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R2_eta02/   5   2 0.2 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 1e3 1e6 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R4_eta02/   6   4 0.2 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 3e6 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R6_eta02/   7   6 0.2 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 2e6 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R01_eta05/  8 0.1 0.5 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R02_eta05/  9 0.2 0.5 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R04_eta05/ 10 0.4 0.5 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 6e5 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R07_eta05/ 11 0.7 0.5 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 1e6 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R1_eta05/  12   1 0.5 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 1e6 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R2_eta05/  13   2 0.5 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 2e6 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R4_eta05/  14   4 0.5 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 2e6 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R6_eta05/  15   6 0.5 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 4e6 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R01_eta08/ 16 0.1 0.8 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 8e5 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R02_eta08/ 17 0.2 0.8 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 8e5 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R04_eta08/ 18 0.4 0.8 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 5e3 1e6 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R07_eta08/ 19 0.7 0.8 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 2e6 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R1_eta08/  20   1 0.8 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 2e6 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R2_eta08/  21   2 0.8 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 4e6 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R4_eta08/  22   4 0.8 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 8e6 1e3 1 1 150 1
+	#./CosmicRayTransport.bin i $(P9)R6_eta08/  23   6 0.8 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 8e6 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R007_eta02/ 25 0.07 0.2 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 1e3 2e5 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R007_eta05/ 26 0.07 0.5 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R007_eta08/ 27 0.07 0.8 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 8e5 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R003_eta02/ 25 0.03 0.2 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R003_eta05/ 26 0.03 0.5 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 8e5 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R003_eta08/ 27 0.03 0.8 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 8e3 2e6 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R001_eta02/ 25 0.01 0.2 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R001_eta05/ 26 0.01 0.5 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 4e3 8e5 1e3 1 1 150 1
+	##./CosmicRayTransport.bin i $(P9)R001_eta08/ 27 0.01 0.8 $(GAMMA) $(NMODES) $(FIELDS) $(NPARTICLES) 8e3 2e6 1e3 1 1 150 1
+
+Run512Modes:	
+	#./CosmicRayTransport.bin i $(P8)R01_eta02/ 22 0.1 0.2 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 1e3 2e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R01_eta05/ 23 0.1 0.5 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R01_eta08/ 24 0.1 0.8 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 4e3 8e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R02_eta02/ 19 0.2 0.2 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 1e3 2e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R02_eta05/ 20 0.2 0.5 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R02_eta08/ 21 0.2 0.8 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 4e3 8e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R04_eta02/ 16 0.4 0.2 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 1e3 6e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R04_eta05/ 17 0.4 0.5 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 2e3 6e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R04_eta08/ 18 0.4 0.8 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 5e3 1e6 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R07_eta02/ 13 0.7 0.2 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 1e3 5e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R07_eta05/ 14 0.7 0.5 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 2e3 1e6 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R07_eta08/ 15 0.7 0.8 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 4e3 2e6 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R1_eta02/  10 1 0.2 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 1e3 5e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R1_eta05/  11 1 0.5 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 2e3 1e6 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R1_eta08/  12 1 0.8 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 4e3 2e6 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R2_eta02/   7 2 0.2 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 1e3 1e6 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R2_eta05/   8 2 0.5 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 2e3 2e6 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R2_eta08/   9 2 0.8 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 4e3 4e6 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R4_eta02/   4 4 0.2 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 2e3 3e6 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R4_eta05/   5 4 0.5 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 2e3 2e6 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R4_eta08/   6 4 0.8 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 4e3 8e6 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R6_eta02/   1 6 0.2 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 2e3 2e6 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R6_eta05/   2 6 0.5 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 2e3 4e6 1e3 1 1 150 1
+	./CosmicRayTransport.bin i $(P8)R6_eta08/   3 6 0.8 $(GAMMA) 512 $(FIELDS) $(NPARTICLES) 4e3 8e6 1e3 1 1 150 1
+
+RunCPU : CosmicRayTransport_CPU.bin
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/1/     0 0.9 0.5 $(GAMMA) 128 1     1 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/2/     0 0.9 0.5 $(GAMMA) 128 1     2 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/4/     0 0.9 0.5 $(GAMMA) 128 1     4 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/8/     0 0.9 0.5 $(GAMMA) 128 1     8 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/16/    0 0.9 0.5 $(GAMMA) 128 1    16 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/32/    0 0.9 0.5 $(GAMMA) 128 1    32 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/64/    0 0.9 0.5 $(GAMMA) 128 1    64 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/128/   0 0.9 0.5 $(GAMMA) 128 1   128 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/256/   0 0.9 0.5 $(GAMMA) 128 1   256 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/512/   0 0.9 0.5 $(GAMMA) 128 1   512 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/1024/  0 0.9 0.5 $(GAMMA) 128 1  1024 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/2048/  0 0.9 0.5 $(GAMMA) 128 1  2048 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/4096/  0 0.9 0.5 $(GAMMA) 128 1  4096 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/8192/  0 0.9 0.5 $(GAMMA) 128 1  8192 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/16384/ 0 0.9 0.5 $(GAMMA) 128 1 16384 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_CPU.bin i /data2/gessner/runtime/CPU/32768/ 0 0.9 0.5 $(GAMMA) 128 1 32768 1e2 1e3 1e3 1 1 150 1
+	
+RunGPU : CosmicRayTransport_GPU.bin
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/1/     0 0.9 0.5 $(GAMMA) 128 1     1 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/2/     0 0.9 0.5 $(GAMMA) 128 1     2 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/4/     0 0.9 0.5 $(GAMMA) 128 1     4 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/8/     0 0.9 0.5 $(GAMMA) 128 1     8 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/16/    0 0.9 0.5 $(GAMMA) 128 1    16 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/32/    0 0.9 0.5 $(GAMMA) 128 1    32 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/64/    0 0.9 0.5 $(GAMMA) 128 1    64 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/128/   0 0.9 0.5 $(GAMMA) 128 1   128 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/256/   0 0.9 0.5 $(GAMMA) 128 1   256 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/512/   0 0.9 0.5 $(GAMMA) 128 1   512 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/1024/  0 0.9 0.5 $(GAMMA) 128 1  1024 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/2048/  0 0.9 0.5 $(GAMMA) 128 1  2048 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/4096/  0 0.9 0.5 $(GAMMA) 128 1  4096 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/8192/  0 0.9 0.5 $(GAMMA) 128 1  8192 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/16384/ 0 0.9 0.5 $(GAMMA) 128 1 16384 1e2 1e3 1e3 1 1 150 1
+	./CosmicRayTransport_GPU.bin i /data2/gessner/runtime/GPU/32768/ 0 0.9 0.5 $(GAMMA) 128 1 32768 1e2 1e3 1e3 1 1 150 1
+	
+RunModeComparisonAddition:
+	./CosmicRayTransport.bin i /data2/gessner/modeComparison/256/  0 0.1 0.5 $(GAMMA)  256 10 $(NPARTICLES) 2e4 4e6 1e3 1 1 150 1
+	./CosmicRayTransport.bin i /data2/gessner/modeComparison/512/  0 0.1 0.5 $(GAMMA)  512 10 $(NPARTICLES) 2e4 4e6 1e3 1 1 150 1
+	
+	
+RunModeComparison:
+	./CosmicRayTransport.bin i /data2/gessner/modeComparison/8/    0 0.1 0.5 $(GAMMA)    8 10 $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i /data2/gessner/modeComparison/16/   0 0.1 0.5 $(GAMMA)   16 10 $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i /data2/gessner/modeComparison/32/   0 0.1 0.5 $(GAMMA)   32 10 $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i /data2/gessner/modeComparison/64/   0 0.1 0.5 $(GAMMA)   64 10 $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i /data2/gessner/modeComparison/128/  0 0.1 0.5 $(GAMMA)  128 10 $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i /data2/gessner/modeComparison/256/  0 0.1 0.5 $(GAMMA)  256 10 $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i /data2/gessner/modeComparison/512/  0 0.1 0.5 $(GAMMA)  512 10 $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i /data2/gessner/modeComparison/1024/ 0 0.1 0.5 $(GAMMA) 1024 10 $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	./CosmicRayTransport.bin i /data2/gessner/modeComparison/2048/ 0 0.1 0.5 $(GAMMA) 2048 10 $(NPARTICLES) 2e3 4e5 1e3 1 1 150 1
+	
+RunRangeComparison:
+	./CosmicRayTransport.bin i /data2/gessner/rangeComparison/64/  0 0.1 0.5 $(GAMMA) 512 10 $(NPARTICLES) 2e3 4e5 1e3 1 64   128 1
+	./CosmicRayTransport.bin i /data2/gessner/rangeComparison/32/  0 0.1 0.5 $(GAMMA) 512 10 $(NPARTICLES) 2e3 4e5 1e3 1 32   128 1
+	./CosmicRayTransport.bin i /data2/gessner/rangeComparison/16/  0 0.1 0.5 $(GAMMA) 512 10 $(NPARTICLES) 2e3 4e5 1e3 1 16   128 1
+	./CosmicRayTransport.bin i /data2/gessner/rangeComparison/8/   0 0.1 0.5 $(GAMMA) 512 10 $(NPARTICLES) 2e3 4e5 1e3 1 8    128 1
+	./CosmicRayTransport.bin i /data2/gessner/rangeComparison/4/   0 0.1 0.5 $(GAMMA) 512 10 $(NPARTICLES) 2e3 4e5 1e3 1 4    128 1
+	./CosmicRayTransport.bin i /data2/gessner/rangeComparison/2/   0 0.1 0.5 $(GAMMA) 512 10 $(NPARTICLES) 2e3 4e5 1e3 1 2    128 1
+	./CosmicRayTransport.bin i /data2/gessner/rangeComparison/1/   0 0.1 0.5 $(GAMMA) 512 10 $(NPARTICLES) 2e3 4e5 1e3 1 1    128 1
+	./CosmicRayTransport.bin i /data2/gessner/rangeComparison/05/  0 0.1 0.5 $(GAMMA) 512 10 $(NPARTICLES) 2e3 4e5 1e3 1 0.5  128 1
+	./CosmicRayTransport.bin i /data2/gessner/rangeComparison/025/ 0 0.1 0.5 $(GAMMA) 512 10 $(NPARTICLES) 2e3 4e5 1e3 1 0.25 128 1
 	
 clean:
 	rm -f $(P)R6_eta02/batch0_particle*.csv

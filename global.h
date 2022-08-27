@@ -33,10 +33,10 @@ using T = float;
 
 // Container for particle state (pos and vel) as well as for magnetic field
 using Vec = std::vector<T>;
-using StateType = thrust::device_vector<T>;
-using StateTypeVec = thrust::device_vector<StateType>;
-//using StateType = thrust::host_vector<T>;
-//using StateTypeVec = thrust::host_vector<StateType>;
+//using StateType = thrust::device_vector<T>;
+//using StateTypeVec = thrust::device_vector<StateType>;
+using StateType = thrust::host_vector<T>;
+using StateTypeVec = thrust::host_vector<StateType>;
 using DeviceVector = thrust::device_vector<T>;
 using HostVector = thrust::host_vector<T>;
 

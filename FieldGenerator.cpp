@@ -16,8 +16,9 @@ void GenerateFields(const T eta, const T gamma, const T Lmin, const T Lmax, cons
 	const T kmin = 2*M_PI/Lmax; 			// [pc⁻¹]
 	const T kmax = 2*M_PI/Lmin; 			// [pc⁻¹]
 	const T Lc = Lmax/5; 					// [pc] approximation for correlation length Kuhlen p. 66, Harari et al. eq.2.4ff
-	const T B0 = 4; 						// [µG] strength of background magnetic field
-	const T dBvar = eta/(1.-eta)*B0*B0; 	// [µG²]
+	const T B_mean = 4; 						// [µG] strength of background magnetic field
+	const T B0 = sqrt((1-eta)*B_mean*B_mean);	// [µG] mean B field
+	const T dBvar = eta*B_mean*B_mean;			// [(µG)²] variance of turbulent field
 	FieldGenerator field(modeCount, kmin, kmax, dBvar, B0, eta, gamma, Lc);
 
 	// Print parameters to console and file

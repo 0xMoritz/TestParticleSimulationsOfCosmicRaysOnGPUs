@@ -262,6 +262,7 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 	// Print
 	//vector<Printer*> printers;
 	//printers.reserve(particleCount);
+	PrintTime();
 	cout << "Writing to files in '" << Printer::GetOutputPath() << "'..." << flush;
 	// Instantiate Printers
 	for (int particle = 0; particle < particleCount; particle++)
