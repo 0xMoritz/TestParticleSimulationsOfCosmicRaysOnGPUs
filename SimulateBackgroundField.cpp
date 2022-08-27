@@ -2,7 +2,7 @@
  * SimulateBackgroundField.cpp
  *
  *  Created on: May 18, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #include "SimulateBackgroundField.h"
@@ -173,4 +173,3 @@ void SimulateBackgroundField(const T R_norm, const T simulationTimeInGyroperiods
 	printer.CloseFile();
 	cout << "finished." << endl;
 }
-

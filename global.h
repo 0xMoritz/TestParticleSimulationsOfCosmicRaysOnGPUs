@@ -2,7 +2,7 @@
  * global.h
  *
  *  Created on: May 4, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #pragma once
@@ -41,4 +41,3 @@ using DeviceVector = thrust::device_vector<T>;
 using HostVector = thrust::host_vector<T>;
 
 //TODO: compare double, float, long double
-

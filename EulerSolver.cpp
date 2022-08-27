@@ -2,7 +2,7 @@
  * EulerSolver.cpp
  *
  *  Created on: Jun 9, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #include "EulerSolver.h"
@@ -22,6 +22,3 @@ void EulerSolver::Step(const T t, Vec& q, Vec& dqdt, Vec& q_out)
 	Derivatives(q, dqdt, field.BField(q)); // Calculate the derivative for next iteration
 	q_out = q;
 }
-
-
-

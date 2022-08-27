@@ -2,7 +2,7 @@
  * IsotropicTurbulenceSimulation.h
  *
  *  Created on: May 18, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #pragma once
@@ -20,7 +20,7 @@
  * The simulation properties are specified by the dimensionless parameters @R_norm, @eta and @modeCount:
  *	@R_norm is the normalized Rigidity, i.e. rigidity divided by coherence length
  * \f$ \tilde{R} = R_{norm} = \frac{R}{L_C \sqrt{B_0^2+\delta B^2}} \f$ ;
- * Rigidity: \f$ R = B ρ = \frac{p}{Q} \f$ , where ρ is the Larmor radius, p momentum, q charge
+ * Rigidity: \f$ R = B \rho = \frac{p}{Q} \f$ , where \f$\rho\f$ is the Larmor radius, p momentum, q charge
  * 	@eta is a dimensionless constant that determines the share of turbulence in the magnetic field:
  * \f$ \eta = \frac{ \langle \delta\vec{B}^2 \rangle }
  * { \langle \delta\vec{B}^2 \rangle + \vec{B}_0^2 } \f$
@@ -33,4 +33,3 @@
  * 	@OUTPUTPOINTS: number of output lines generated
  */
 void IsotropicTurbulenceSimulation(const T R_norm, const T eta, const T gamma, const T Lmin, const T Lmax, const int modeCount, const int fieldCount, const int particlesPerFieldCount, const T SimulationTimeInGyrationCycles, const int minSimSteps, const int outputPoints, const bool useBoost, const int seed, const bool logTime);
-

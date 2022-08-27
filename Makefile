@@ -27,7 +27,7 @@ TARGETS = $(addsuffix .o, $(basename $(wildcard *.cpp))) $(addsuffix .o, $(basen
 BINARIES = CosmicRayTransport.bin
 
 
-all : $(BINARIES)
+all : $(BINARIES) Documentation
 
 
 %.o : %.cpp
@@ -44,9 +44,15 @@ CosmicRayTransport.bin : $(TARGETS)
 	@echo "Finished Building."
 	@echo ""
 
+man : Doxyfile
+	doxygen Doxyfile
+	cd Documentation/latex && pdflatex refman.tex --shell-escape
+	cd Documentation/latex && pdflatex refman.tex --shell-escape
+
 PHONY. : clean
 
 clean:
 	rm -f $(TARGETS)
 	rm -f $(BINARIES)
-
+	rm -rf Documentation/html
+	rm -rf Documentation/latex

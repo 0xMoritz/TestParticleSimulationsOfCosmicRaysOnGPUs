@@ -2,7 +2,7 @@
  * SimulateIsotropicTurbulence.cpp
  *
  *  Created on: May 18, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #include "SimulateIsotropicTurbulence.h"

@@ -2,7 +2,7 @@
  * RungeKuttaSolver.cpp
  *
  *  Created on: Jun 9, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #include "RungeKuttaSolver.h"
@@ -97,5 +97,3 @@ void RungeKuttaSolver::RK4(Vec& q, Vec& dqdt, Vec& q_out)
 	}
 	dqdt=dqt; // Derivative for the next iteration
 }
-
-

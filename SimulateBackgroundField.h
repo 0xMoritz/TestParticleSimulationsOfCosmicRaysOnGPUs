@@ -2,7 +2,7 @@
  * SimulateBackgroundField.h
  *
  *  Created on: May 18, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #pragma once
@@ -20,5 +20,3 @@
  * 	@OUTPUTPOINTS: number of output lines generated
  */
 void SimulateBackgroundField(const T R_norm, const T SimulationTimeInGyrationCycles, const int minSimSteps, const int outputPoints);
-
-

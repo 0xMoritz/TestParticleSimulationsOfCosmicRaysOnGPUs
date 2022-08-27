@@ -2,7 +2,7 @@
  * BackgroundAnalyticSolution.cpp
  *
  *  Created on: Jun 9, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner Geßner
  */
 
 #include "BackgroundAnalyticSolution.h"
@@ -30,5 +30,3 @@ void BackgroundAnalyticSolution::Step(const T t, Vec& q, Vec& dqdt, Vec& q_out)
 	q_out[2] = v_par*t;
 	// the speeds are not calculated because they are not needed for integration
 }
-
-

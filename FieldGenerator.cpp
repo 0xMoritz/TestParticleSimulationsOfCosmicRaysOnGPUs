@@ -2,7 +2,7 @@
  * FieldGenerator.cpp
  *
  *  Created on: May 5, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #include "FieldGenerator.h"
@@ -283,4 +283,3 @@ FieldGenerator::FieldGenerator(const T B0_) // Generate constant
 	modes = {};
 	// modes stays empty but will not be called because n=0
 }
-

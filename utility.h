@@ -2,7 +2,7 @@
  * utility.h
  *
  *  Created on: May 4, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #pragma once
@@ -61,4 +61,3 @@ void PrintTime();
  * Constructs a Unit vector from a given @eta in [-1,1] and @phi in [0,2\f$ \pi\f$ )
  */
 Vec UnitVec(const T eta, const T phi);
-

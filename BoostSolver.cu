@@ -2,7 +2,7 @@
  * BoostintSolver.cu
  *
  *  Created on: Jun 16, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #include "BoostSolver.h"
@@ -329,4 +329,3 @@ void BoostSolver::Step(const T t, Vec& q, Vec& dqdt, Vec& q_out)
 {
 
 }
-

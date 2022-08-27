@@ -2,7 +2,7 @@
  * Engine.cpp
  *
  *  Created on: May 6, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #include "Engine.h"

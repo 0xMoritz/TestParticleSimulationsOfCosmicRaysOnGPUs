@@ -2,7 +2,7 @@
  * CosmicRayTransport.h
  *
  *  Created on: May 2, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #pragma once

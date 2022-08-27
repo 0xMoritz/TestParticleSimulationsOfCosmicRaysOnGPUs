@@ -2,7 +2,7 @@
  * utility.cpp
  *
  *  Created on: May 4, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #include "utility.h"
@@ -90,5 +90,3 @@ Vec UnitVec(const T eta, const T phi)
 	q[2] = eta;
 	return q;
 }
-
-

@@ -2,7 +2,7 @@
  * Printer.h
  *
  *  Created on: Jun 9, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #pragma once

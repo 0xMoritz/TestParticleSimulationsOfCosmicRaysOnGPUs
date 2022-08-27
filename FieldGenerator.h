@@ -2,7 +2,7 @@
  * FieldGenerator.h
  *
  *  Created on: May 5, 2022
- *      Author: moritz
+ *      Author: Moritz Geßner
  */
 
 #pragma once
@@ -49,7 +49,7 @@ private:
 	std::vector<Mode> modes; // stores all the modes
 
 	/*!
-	 * Generates a powerspectrum $k^{-γ}$ with the Energy normalized to δB².
+	 * Generates a powerspectrum \f$k^{-\gamma}\f$ with the Energy normalized to δB².
 	 */
 	void GeneratePowerspectrum();
 
