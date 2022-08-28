@@ -9,14 +9,6 @@
 
 using namespace std;
 
-// https://www.boost.org/doc/libs/1_64_0/libs/numeric/odeint/doc/html/boost_numeric_odeint/getting_started/short_example.html
-
-//stateType A = {}
-//ptrA = raw_pointer_cast(&A[0])
-//for (int i = 0; i < nModes; i++)
-//{
-//
-//}
 
 template<class Tuple>
 __host__ __device__
@@ -106,10 +98,10 @@ void LorentzForce::operator() (const StateType& q, StateType& dqdt, const T t)
 				boost::begin(q) + 4*particleCount, 			// v_y
 				boost::begin(q) + 5*particleCount)), 		// v_z
 			thrust::make_zip_iterator(thrust::make_tuple(
-				boost::begin(dqdt) + 0*particleCount,		// dx/dt
+				boost::begin(dqdt) + 0*particleCount,			// dx/dt
 				boost::begin(dqdt) + 1*particleCount, 		// dy/dt
-				boost::begin(dqdt) + 2*particleCount,		// dz/dt
-				boost::begin(dqdt) + 3*particleCount,		// dv_x/dt
+				boost::begin(dqdt) + 2*particleCount,			// dz/dt
+				boost::begin(dqdt) + 3*particleCount,			// dv_x/dt
 				boost::begin(dqdt) + 4*particleCount, 		// dv_y/dt
 				boost::begin(dqdt) + 5*particleCount)))),	// dv_z/dt
 		thrust::make_zip_iterator(thrust::make_tuple(
@@ -121,10 +113,10 @@ void LorentzForce::operator() (const StateType& q, StateType& dqdt, const T t)
 				boost::begin(q) + 5*particleCount, 			// v_y
 				boost::begin(q) + 6*particleCount)), 		// v_z
 			thrust::make_zip_iterator(thrust::make_tuple(
-				boost::begin(dqdt) + 1*particleCount,		// dx/dt
+				boost::begin(dqdt) + 1*particleCount,			// dx/dt
 				boost::begin(dqdt) + 2*particleCount, 		// dy/dt
-				boost::begin(dqdt) + 3*particleCount,		// dz/dt
-				boost::begin(dqdt) + 4*particleCount,		// dv_x/dt
+				boost::begin(dqdt) + 3*particleCount,			// dz/dt
+				boost::begin(dqdt) + 4*particleCount,			// dv_x/dt
 				boost::begin(dqdt) + 5*particleCount, 		// dv_y/dt
 				boost::begin(dqdt) + 6*particleCount)))),	// dv_z/dt
 		DerivativeFunctor(R_inverse, B0, modeCount, beta, Ax, Ay, Az, kx, ky, kz));

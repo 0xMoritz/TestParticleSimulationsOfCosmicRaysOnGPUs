@@ -45,11 +45,6 @@ void Engine::Derivatives(const Vec& q, Vec& dqdt, const Vec B)
 Engine::Engine(const T totalSimulationTime_, const int outputPoints_, const int stepsPerOutput_, const T dt_, const T R, const T V_, const FieldGenerator& field_, const T omega_)
 : totalSimulationTime(totalSimulationTime_), outputPoints(outputPoints_), stepsPerOutput(stepsPerOutput_), dt(dt_), V(V_), field(field_), R_inverse(1/R)
 {
-//	OUTPUTPOINTS = OUTPUTPOINTS_;
-//	STEPSPEROUTPUT = STEPSPEROUTPUT_;
-//	dt = dt_; 					// [pc·c⁻¹]
-//	q0 = q0_;					// [pc], [pc·s⁻¹]
-//	R_inverse = 1/R;			// [e·c²/MeV] Charge divided by mass and Lorentz factor Q_MGamma = Q/m/γ
 	firstWriteTime = 0.1*omega_;
 	tWrite = firstWriteTime;
 	timePerOutputIncrease = pow(totalSimulationTime/firstWriteTime, 1./outputPoints);	// [pc·c⁻¹]
@@ -58,16 +53,11 @@ Engine::Engine(const T totalSimulationTime_, const int outputPoints_, const int 
 Engine::Engine(const T totalSimulationTime_, const int outputPoints_, const int stepsPerOutput_, const T dt_, const T R, const T V_, const Vec q0_, const FieldGenerator& field_, const T omega_)
 : totalSimulationTime(totalSimulationTime_), outputPoints(outputPoints_), stepsPerOutput(stepsPerOutput_), dt(dt_), V(V_), q0(q0_), field(field_), R_inverse(1/R)
 {
-//	OUTPUTPOINTS = OUTPUTPOINTS_;
-//	STEPSPEROUTPUT = STEPSPEROUTPUT_;
-//	dt = dt_; 					// [pc·c⁻¹]
-//	q0 = q0_;					// [pc], [pc·s⁻¹]
-	//R_inverse = 1/R;			// [e·c²/MeV] Charge divided by mass and Lorentz factor Q_MGamma = Q/m/γ
 	firstWriteTime = 0.1*omega_;
 	tWrite = firstWriteTime;
 	timePerOutputIncrease = pow(totalSimulationTime/firstWriteTime, 1./outputPoints);	// [pc·c⁻¹]
 }
-float Engine::Simulation(vector<Vec>& trajectory, Vec& time, int batchNo) // TODO: const methods
+float Engine::Simulation(vector<Vec>& trajectory, Vec& time, int batchNo)
 {
 	Vec q(q0); // running state variable TODO:use copy-constructor
 	Vec dqdt(6);
@@ -123,8 +113,3 @@ float Engine::Simulation(vector<Vec>& trajectory, Vec& time, int batchNo) // TOD
 	cout << " finished. Time elapsed: " << timeElapsedInSeconds << " s" << endl;
 	return timeElapsedInSeconds;
 }
-
-//TODO: integrate_adaptive
-// make_control
-//TODO: specify seed in command line
-//TODO: Fix crashing field generation
