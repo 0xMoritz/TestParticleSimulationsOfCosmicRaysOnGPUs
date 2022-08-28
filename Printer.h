@@ -1,5 +1,6 @@
-/*
- * Printer.h
+/*!
+ * @file Printer.h
+ * @brief Auxillary class to write data into a .csv file
  *
  *  Created on: Jun 9, 2022
  *      Author: Moritz Geßner
@@ -17,21 +18,21 @@
 class Printer
 {
 private:
-	static std::string outputPath;
-	std::ofstream file;
+	static std::string outputPath; //!< The path all files will be saved to, can be changed with @ref ChangeOutputPath
+	std::ofstream file; //!< opened file
 
 public:
 	/*!
-	 * Constructor for Printer Object, opens a file with @filename. @header will
+	 * Constructor for Printer Object, opens a file with \p filename. \p header will
 	 * be written to the first line of the file.
+	 * \param filename name of the file, will be saved in directory @ref outputPath
+	 * \param header first line of the file
 	 */
 	Printer(std::string filename, std::string header="");
 
-//	Printer(const Printer& p);
-
 	/*!
-	 * Changes the global output Path, if the directory doesn't exist or can't be accessed, 1 will be returned.
-	 * If the directory exist and is writeable, 0 will be returned
+	 * Changes the global output path to \p newPath
+	 * \return 1 if the directory doesn't exist or can't be accessed, 0 if the directory exist and is writeable
 	 */
 	static int ChangeOutputPath(std::string newPath);
 
@@ -41,22 +42,22 @@ public:
 	static std::string GetOutputPath();
 
 	/*!
-	 * Writes a custom message to the file. Use for Header etc.
+	 * Writes a custom message \p str to the file.
 	 */
 	void Write(std::string str);
 
 	/*!
-	 * Writes a @Vec vector to the file in csv format with ";" delimiter.
+	 * Writes components of \p vec into a new line of the file in csv format with delimiter ";".
 	 */
 	void Write(const Vec& vec );
 
 	/*!
-	 * Closes the file.
+	 * Closes the file. Should be called before destructor
 	 */
 	void CloseFile();
 
 	/*!
-	 * Does not call @CloseFile()
+	 * Does not call @ref CloseFile
 	 */
 	~Printer();
 };

@@ -1,5 +1,6 @@
-/*
- * RandomGen.h
+/*!
+ * @file RandomGen.h
+ * @brief Auxillary class for random number generation
  *
  *  Created on: Jun 9, 2022
  *      Author: Moritz Geßner

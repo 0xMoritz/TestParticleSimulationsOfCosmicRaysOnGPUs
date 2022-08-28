@@ -1,5 +1,5 @@
 /*
- * BoostintSolver.cu
+ * BoostSolver.cu
  *
  *  Created on: Jun 16, 2022
  *      Author: Moritz Geßner

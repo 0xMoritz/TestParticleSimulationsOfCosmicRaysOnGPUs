@@ -1,6 +1,6 @@
-/*! \brief Base class for ODE solvers
- *
- * Engine.h
+/*!
+ * @file Engine.h
+ * @brief Base class for ODE solvers
  *
  *  Created on: May 6, 2022
  *      Author: Moritz Geßner

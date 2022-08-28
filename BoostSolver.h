@@ -1,5 +1,6 @@
-/*
- * BoostintSolver.h
+/*!
+ * @file BoostSolver.h
+ * @brief Solver using boost ODEint's Runge Kutta implementation
  *
  *  Created on: Jun 9, 2022
  *      Author: Moritz Geßner

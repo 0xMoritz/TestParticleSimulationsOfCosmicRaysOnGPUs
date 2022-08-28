@@ -1,5 +1,6 @@
-/*
- * FieldGenerator.h
+/*!
+ * @file FieldGenerator.h
+ * @brief Generates an isotropic turbulent magnetic
  *
  *  Created on: May 5, 2022
  *      Author: Moritz Geßner

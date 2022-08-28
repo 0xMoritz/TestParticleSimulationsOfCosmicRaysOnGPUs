@@ -14,19 +14,10 @@ using namespace std;
 Printer::Printer(string filename, string header)
 : file(outputPath + filename)
 {
-	//boost::filesystem::create_directories(outputPath);
-	//system("mkdir -p " + outputPath)
-	//https://en.cppreference.com/w/cpp/filesystem/exists
-
-	// https://en.cppreference.com/w/cpp/filesystem/create_directory
-	//Write(header);
+	//boost::filesystem::create_directories(outputPath); // works only with c++17
 	file << header << endl;
 }
-//Printer::Printer(const Printer& p)
-//: file(p.file)
-//{
-//
-//}
+
 int Printer::ChangeOutputPath(string newPath)
 {
 	if (newPath.back()=='/')
@@ -60,7 +51,6 @@ void Printer::Write(string str)
 {
 	file << str << endl;
 }
-//template<typename Type>
 void Printer::Write(const Vec& vec)
 {
 	for (size_t i=0;i<vec.size()-1;i++)

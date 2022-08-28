@@ -1,5 +1,6 @@
-/*
- * BackgroundAnalyticSolution.h
+/*!
+ * @file BackgroundAnalyticSolution.h
+ * @brief Solver like class to calculate analytical solution to background field
  *
  *  Created on: Jun 9, 2022
  *      Author: Moritz Geßner Geßner

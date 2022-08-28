@@ -1,5 +1,6 @@
-/*
- * RungeKuttaSolver.h
+/*!
+ * @file RungeKuttaSolver.h
+ * @brief ODE-solver using Runge Kutta method of second or fourth order
  *
  *  Created on: Jun 9, 2022
  *      Author: Moritz Geßner

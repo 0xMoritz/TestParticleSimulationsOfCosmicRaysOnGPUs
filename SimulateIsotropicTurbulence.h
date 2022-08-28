@@ -1,5 +1,6 @@
-/*
- * IsotropicTurbulenceSimulation.h
+/*!
+ * @file SimulateIsotropicTurbulence.h
+ * @brief Simulates a number of particles moving through an isotropic magnetic field
  *
  *  Created on: May 18, 2022
  *      Author: Moritz Geßner

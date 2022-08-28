@@ -1,5 +1,6 @@
-/*
- * EulerSolver.h
+/*!
+ * @file EulerSolver.h
+ * @brief ODE-solver using the Euler method
  *
  *  Created on: Jun 9, 2022
  *      Author: Moritz Geßner

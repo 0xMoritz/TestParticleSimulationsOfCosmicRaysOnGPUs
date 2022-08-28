@@ -20,10 +20,6 @@ string Printer::outputPath{"output/"};
 
 
 int ParseInput(int argc, char*argv[])
-/**
- * @argc is the number of command line parameters including the command that executes the program
- * @argv[] is the list of parameters, @argv[0] will be the command to execute the program
- */
 {
 	// Standard parameters:
 	T R_norm = 0.9;
@@ -63,17 +59,17 @@ int ParseInput(int argc, char*argv[])
 	// Empty line for better visibility:
 	cout << endl;
 	// Read input
-	if (argc < 2)
+	if (argc < 2) // display error if no arguments are given
 	{
 		cout << errorMsg << endl << endl;
 		return 1;
 	}
 
-	if (argv[1][0] == 'H' || argv[1][0] == 'h')
+	if (argv[1][0] == 'H' || argv[1][0] == 'h') // display help message
 	{
 		cout << "Using C++" << __cplusplus << endl;
 
-		if (argc > 2)
+		if (argc > 2) // Display help message for specific mode if specified
 		{
 			if (argv[2][0] == 'I' || argv[2][0] == 'i')
 			{
@@ -93,25 +89,26 @@ int ParseInput(int argc, char*argv[])
 			cout << "Error: Mode '" << argv[2][0] << " is not available." << endl;
 			return 1;
 		}
-		else
+		else // Otherwise display help for all modes
 		{
 			cout << H_help << I_help << B_help << F_help << endl;
 			return 0;
 		}
 	}
 	// Determine filepath
-	if (argc > 2)
+	if (argc > 2) // Filepath is the only parameter necessary for all three modes, so it can be retrieved before determining the mode
 	{
 		string path = (string)argv[2];
+		// Check whether directory is available and display error if not
 		int dirCheck = Printer::ChangeOutputPath(path);
 		if (dirCheck == 1)
 		{
-			cout << "Error: Directory '" << path << "' access denied." << endl;
+			cout << "Error: Directory '" << path << "' does not exist or access denied." << endl;
 			return 1;
 		}
 	}
 	// Choose mode
-	if (argv[1][0] == 'I' || argv[1][0] == 'i')
+	if (argv[1][0] == 'I' || argv[1][0] == 'i') // Isotropic turbulence mode
 	{
 		if (argc > 3)
 			seed = atoi(argv[3]);
@@ -142,8 +139,10 @@ int ParseInput(int argc, char*argv[])
 		if (argc > 16)
 			logTime = atoi(argv[16]);
 
+		// Retrieve random number generator and insert seed
 		RandomGen* rd = RandomGen::GetInstance();
 		rd->ChangeSeed(seed);
+		// Invoke Simulation
 		IsotropicTurbulenceSimulation(R_norm, eta, gamma, Lmin, Lmax, modeCount, fieldCount, particlesPerFieldCount, simulationTimeInGyroperiods, minSimSteps, outputPoints, useBoost, seed, logTime);
 	}
 	else if (argv[1][0] == 'B' || argv[1][0] == 'b')
@@ -157,6 +156,7 @@ int ParseInput(int argc, char*argv[])
 		if (argc > 6)
 			outputPoints = atoi(argv[6]);
 
+		// Invoke Simulation
 		SimulateBackgroundField(R_norm, simulationTimeInGyroperiods, minSimSteps, outputPoints);
 	}
 	else if (argv[1][0] == 'F' || argv[1][0] == 'f')
@@ -180,11 +180,13 @@ int ParseInput(int argc, char*argv[])
 		if (argc > 11)
 			evalBoxLenByLmax = strtod(argv[11], nullptr);
 
+		// Retrieve random number generator and insert seed
 		RandomGen* rd = RandomGen::GetInstance();
 		rd->ChangeSeed(seed);
+		// Invoke generation of fields
 		GenerateFields(eta, gamma, Lmin, Lmax, modeCount, fieldGenerationCount, gridLength, evalBoxLenByLmax, seed);
 	}
-	else
+	else // Invalid mode argument
 	{
 		cout << errorMsg << endl << endl;
 		return 1;
@@ -193,16 +195,10 @@ int ParseInput(int argc, char*argv[])
 	return 0;
 }
 
-/**if (argc == 2 && ((string)argv[1]).find("h") != string::npos) // If first argument contains 'h'
-
-				<< " if not specified standard input is " << mode << " " << R << " " << eta << " " << modeCount << " " << amount
-				<< " " << simulationTimeInGyrationCycles << " " << minSimSteps << " " << outputPoints << endl;*/
-
 int main(int argc, char* argv[])
 {
 	// Initialize RandomGen Singleton
 	RandomGen::GetInstance();
+	// Parse input and execute according command
 	return ParseInput(argc, argv);
 }
-
-//TODO: compute power spectrum, use logarithmically scaled concentric binsx2go

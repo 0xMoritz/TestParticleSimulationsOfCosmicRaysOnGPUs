@@ -19,6 +19,8 @@ T SqNorm(Vec v)
 	}
 	return s;
 }
+
+
 T ScalarProd(const Vec& v, const Vec& w)
 {
 	assert(v.size() <= w.size());
@@ -29,6 +31,8 @@ T ScalarProd(const Vec& v, const Vec& w)
 	}
 	return s;
 }
+
+
 void Scale(Vec& v, T a)
 {
 	for (size_t i=0;i<v.size();i++)
@@ -36,6 +40,8 @@ void Scale(Vec& v, T a)
 		v[i] = v[i]*a;
 	}
 }
+
+
 Vec Sum(const Vec& v, const Vec& w)
 {
 	assert(v.size() == w.size());
@@ -46,6 +52,8 @@ Vec Sum(const Vec& v, const Vec& w)
 	}
 	return u;
 }
+
+
 void VecAdd(Vec& v, const Vec& w)
 {
 	assert(v.size() == w.size());
@@ -55,12 +63,15 @@ void VecAdd(Vec& v, const Vec& w)
 		v[i] = v[i] + w[i];
 	}
 }
-//template <typename Type>
-//void AppendVector(vector<Type>& a, const vector<Type>& b)
+
+
 void AppendVector(Vec& a, const Vec& b)
 {
-	a.insert(a.end(), b.begin(), b.end()); // https://stackoverflow.com/questions/2551775/appending-a-vector-to-a-vector
+	// https://stackoverflow.com/questions/2551775/appending-a-vector-to-a-vector
+	a.insert(a.end(), b.begin(), b.end());
 }
+
+
 T VSquared(const Vec& q)
 {
 	return (q[3]*q[3] + q[4]*q[4] + q[5]*q[5]); // classical kinetic energy
@@ -81,12 +92,13 @@ void PrintTime()
 				<< setw(2) << setfill('0') << localTime->tm_sec << "] " << flush;
 }
 
+
 // Unitvec
-Vec UnitVec(const T eta, const T phi)
+Vec UnitVec(const T zeta, const T phi)
 {
 	Vec q(3);
-	q[0] = sqrt(1-eta*eta) * cos(phi);
-	q[1] = sqrt(1-eta*eta) * sin(phi);
-	q[2] = eta;
+	q[0] = sqrt(1-zeta*zeta) * cos(phi);
+	q[1] = sqrt(1-zeta*zeta) * sin(phi);
+	q[2] = zeta;
 	return q;
 }

@@ -1,5 +1,6 @@
-/*
- * SimulateBackgroundField.h
+/*!
+ * @file SimulateBackgroundField.h
+ * @brief Prepares simulatinga particle moving through a background field using all solvers
  *
  *  Created on: May 18, 2022
  *      Author: Moritz Geßner
