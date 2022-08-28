@@ -16,8 +16,8 @@ void GenerateFields(const T eta, const T gamma, const T Lmin, const T Lmax, cons
 	const T kmin = 2*M_PI/Lmax; 			// [pc⁻¹]
 	const T kmax = 2*M_PI/Lmin; 			// [pc⁻¹]
 	const T Lc = Lmax/5; 					// [pc] approximation for correlation length Kuhlen p. 66, Harari et al. eq.2.4ff
-	const T B_mean = 4; 						// [µG] strength of background magnetic field
-	const T B0 = sqrt((1-eta)*B_mean*B_mean);	// [µG] mean B field
+	const T B_mean = 4; 						// [µG] strength of the average magnetic field
+	const T B0 = sqrt((1-eta)*B_mean*B_mean);	// [µG] background B field
 	const T dBvar = eta*B_mean*B_mean;			// [(µG)²] variance of turbulent field
 	FieldGenerator field(modeCount, kmin, kmax, dBvar, B0, eta, gamma, Lc);
 
@@ -39,7 +39,7 @@ void GenerateFields(const T eta, const T gamma, const T Lmin, const T Lmax, cons
 				"\tdeltaBvar = " + to_string(dBvar) + " uG\n";
 	cout << parameterText;
 	Printer parameterFilePrinter("_info.txt");
-	parameterFilePrinter.Write(parameterText); // Not closing here, last entry will be computation time*/
+	parameterFilePrinter.Write(parameterText); // Not closing here, last entry will be computation time
 
 	// Measure total computation time:
 	const clock_t beginComputingTime = clock();
@@ -47,7 +47,9 @@ void GenerateFields(const T eta, const T gamma, const T Lmin, const T Lmax, cons
 	// Generate many fields for statistics
 	for (int i = 0; i < fieldCount;i++)
 	{
+		// Generate new field according to the given parameters
 		field.Generate();
+		// Evaluate the field in a grid cube and write values to .csv file
 		field.EvaluateField(gridLength, evalBoxLenByLmax, "field_" + to_string(i) + ".csv");
 	}
 
@@ -79,6 +81,7 @@ const vector<Mode>& FieldGenerator::GetModes() const
 Vec FieldGenerator::BField(const Vec& x) const
 {
 	Vec res = {0,0,0};
+	// Sum the values of all modes
 	for(int i=0;i<n;i++)
 	{
 		VecAdd(res, modes[i].ModeBfield(x));
@@ -92,10 +95,10 @@ T FieldGenerator::GetB0() const
 }
 void FieldGenerator::GeneratePowerspectrum()
 {
-	// Normalize spectrum:
+	// Normalize spectrum: {
 	// g(k)= gFac k^{-5/3} // power law
 	// var = delta B^2 = int_RR g(k) dk
-
+	// Now calculate the integral with lograithmical scaling to determine gFac
 	// Logarithmic scaling with N steps
 	int N = (int)1e6;
 	T logFac = pow(kmax/kmin, 1./(N-1)); // [1]
@@ -109,18 +112,19 @@ void FieldGenerator::GeneratePowerspectrum()
 		k *= logFac;
 	}
 	T gFac = dBvar/gSum; // [µG²/pc^(γ-1)]
+	// }
 
+	// Determine the amplitudes A_i corresponding to the modes with wavenumbers k_i {
 	/* Logarithmic scaling of k:
 	 * k(i) = A*logFac^i
 	 * kmin = k(0) = A  => A = kmin
 	 * kmax = k(n-1) = A logFac^(n-1)  => logFac = (kmax/kmin)^(1/(n-1))
 	 */
 	logFac = pow(kmax/kmin, 1./(n-1)); // Introduce logarithmic scaling again with number of modes n
-	//logFac = pow(kmax/kmin, 1./n); // Introduce logarithmic scaling again with number of modes n
 	k = kmin;
 	Vec veck(n); // [pc⁻¹]
 	Vec vecA(n); // [µG]
-	Vec vecg(n); // [µG²·pc]
+//	Vec vecg(n); // [µG²·pc]
 	modes.clear();
 	modes.reserve(n);
 	for(int i=0;i<n;i++)
@@ -129,15 +133,16 @@ void FieldGenerator::GeneratePowerspectrum()
 		T dk = (logFac-1)*k;
 		//cout << "dk=" << dk << endl;
 		veck[i] = k;
-		vecg[i] = gFac * pow(k, -gamma);
-		vecA[i] = sqrt( 2.*pow(k, -gamma)*gFac*dk); // <cos²> = 1/2
-		// Apply Amplitude to mode
+//		vecg[i] = gFac * pow(k, -gamma);
+		vecA[i] = sqrt( 2.*pow(k, -gamma)*gFac*dk); // <cos²> = 1/2, see thesis for calculation of A_i
+		// Apply Amplitude to mode and append to list of modes
 		modes.push_back(GenerateMode(k, vecA[i]));
 		//cout << "k=" << k <<" , kmin=" << kmin << ", kmax=" << kmax << endl;
 		k *= logFac;
 	}
+	// }
 
-//	// Write powerspectrum:
+//	// Write powerspectrum (for debugging):
 //	Printer printer("powerspectrum.csv", "k*pc; g(k)/microG^2*pc; A(k)/microG");
 //	for(int i=0; i<n; i++)
 //	{
@@ -148,45 +153,25 @@ void FieldGenerator::GeneratePowerspectrum()
 }
 void FieldGenerator::EvaluateGrid(vector<Vec>& fieldPoints, const int gridLength, const T evalBoxLenByLmax) const
 {
-	T max = evalBoxLenByLmax * 2*M_PI/kmin; // choose 2pi/kmin to incorporate each mode
-	T dr = max/gridLength;
+	// absolute box size
+	T max = evalBoxLenByLmax * 2*M_PI/kmin; // choose 2pi/kmin to incorporate each mode, account for the fact tht evalBoxLenByLmax is given in terms of Lmax
+	T dr = max/gridLength; // spatial step size
 	fieldPoints.reserve((size_t)max/dr*max/dr*max/dr);
 	for (T x=0; x<max; x+=dr)
 	{
-		cout << "." << flush;
+		cout << "." << flush; // progress indicator
 		for (T y=0; y<max; y+=dr)
 		{
 			for (T z=0; z<max; z+=dr)
 			{
 				Vec pos = {x, y, z};
 				Vec B = BField(pos);
-				AppendVector(pos, B);
+				AppendVector(pos, B); // Write values in the format (x, y, z, B_x, B_y, B_z)
 				fieldPoints.push_back(pos);
 			}
 		}
 	}
 }
-//void FieldGenerator::EvaluateRandomPoints(const int N, vector<Vec>& fieldPoints)
-//{
-//	random_device rd;  // Will be used to obtain a seed for the random number engine
-//	mt19937 RdmGen(rd());
-//	T max = 2*M_PI/kmin; // choose 2pi/kmin to incorporate each mode
-//	uniform_real_distribution<T> dist(0., max);
-//
-//	fieldPoints.reserve((size_t)N);
-//
-//	for (int i=0;i<N;i++)
-//	{
-//		T x = dist(RdmGen);
-//		T y = dist(RdmGen);
-//		T z = dist(RdmGen);
-//
-//		Vec pos = {x, y, z};
-//		Vec B = BField(pos);
-//		AppendVector(pos, B);
-//		fieldPoints.push_back(pos);
-//	}
-//}
 Mode FieldGenerator::GenerateMode(T k, T A)
 {
 	// Generate a random direction distributed isotropically (adopted from Kuhlen Eq.2.45)
@@ -198,7 +183,6 @@ Mode FieldGenerator::GenerateMode(T k, T A)
 	vec_k[1] = sqrt(1-eta*eta) * sin(phi);
 	vec_k[2] = eta;
 	Scale(vec_k, k);
-	//cout << "veck=" << vec_k[0] << ", " << vec_k[1] << ", " << vec_k[2] << endl;
 	// Generate the orthogonal polarization vector from k (adopted from Kuhlen Eq.2.48) and Amplitude A
 	// polarization has to be orthogonal for field to be divergence free
 	Vec vec_Axi(3);
@@ -206,10 +190,9 @@ Mode FieldGenerator::GenerateMode(T k, T A)
 	vec_Axi[0] = A*(-sin(alpha)*sin(phi) + cos(alpha)*cos(phi)*eta);
 	vec_Axi[1] = A*( sin(alpha)*cos(phi) + cos(alpha)*sin(phi)*eta);
 	vec_Axi[2] = A*(-sqrt(1-eta*eta)*cos(alpha));
-	//cout << "vec_Axi=" << vec_Axi[0] << ", " << vec_Axi[1] << ", " << vec_Axi[2] << endl;
 	// Generate a random Phase distributed uniformally in [0,2 PI]
 	T beta = rg->RandomFloat_0_2PI();
-	// DebugInfo (Check whether vectors are normed correctly): cout << "k=" << k << " Norm |Axi|^2/A^2=" << SqNorm(vec_Axi)/A/A << " Norm |k|^2/k^2=" << SqNorm(vec_k)/k/k << " Scalarproduct vec_Axi·vec_k=" << ScalarProd(vec_Axi, vec_k) << endl;
+// DebugInfo (Check whether vectors are normed correctly): cout << "k=" << k << " Norm |Axi|^2/A^2=" << SqNorm(vec_Axi)/A/A << " Norm |k|^2/k^2=" << SqNorm(vec_k)/k/k << " Scalarproduct vec_Axi·vec_k=" << ScalarProd(vec_Axi, vec_k) << endl;
 	// concatenate properties in mode object
 	Mode mode(vec_Axi, vec_k, beta);
 	return mode;
@@ -253,24 +236,19 @@ void FieldGenerator::EvaluateField(const int gridLength, const T evalBoxLenByLma
 	// Print evaulated grid:
 	PrintTime();
 	cout << "Writing to file..." << flush;
-	//Printer printer(filename, "x/Lc; y/Lc; z/Lc; B_x/µG; B_y/µG; B_z/µG");
 	Printer printer(filename, "x/pc; y/pc; z/pc; B_x/µG; B_y/µG; B_z/µG");
 	printer.Write("gamma = " + to_string(gamma) + "eta = " + to_string(eta) + ", modeCount = " + to_string(n) + ", kmin = " + to_string(kmin)
 			+ ", kmax = " + to_string(kmax) + ", gridLength = " + to_string(gridLength)
 			+ ", Lc = " + to_string(Lc) + ", timeElapsedInSeconds = " + to_string(timeElapsedInSeconds));
 	for(size_t i=0; i<fieldPoints.size(); i++)
 	{
-		/*// Norm position to coherence length and write TODO: norm or not?
-		fieldPoints[i][0] = fieldPoints[i][0]/Lc;
-		fieldPoints[i][1] = fieldPoints[i][1]/Lc;
-		fieldPoints[i][2] = fieldPoints[i][2]/Lc;*/
 		printer.Write(fieldPoints[i]);
 	}
 	printer.CloseFile();
 	cout << "finished." << endl;
 }
 
-FieldGenerator::FieldGenerator(const T B0_) // Generate constant
+FieldGenerator::FieldGenerator(const T B0_) // Generate constant homogeneous background field only
 {
 	B0 = B0_;
 	n = 0;

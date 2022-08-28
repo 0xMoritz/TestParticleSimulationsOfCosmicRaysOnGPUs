@@ -24,6 +24,7 @@ RandomGen* RandomGen::GetInstance()
 
     return instance;
 }
+// Standard constructor, initialize engine to seed 0 (change later) and distribution ranges
 RandomGen::RandomGen() : RdmEngine(0), dist_0_2PI(0., 2.0*M_PI), dist_m1_1(-1., 1.)
 {
 

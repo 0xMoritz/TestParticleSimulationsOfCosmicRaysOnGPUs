@@ -29,7 +29,7 @@ protected:
 	int numWrites = 0;
     T timePerOutputIncrease;
 
-	/*! \brief Calculates the derivatives at given state \f$q\f$.
+	/*! @brief Calculates the derivatives at given state \f$q\f$.
 	 *
 	 * Calculates the Derivatives @dqdt dependent on the velocity for the differential equation
 	 * the @q vector has Components \f$  q=(x, y, z, v_x, v_y, v_z)^T \f$ , @B is the magnetic field,
