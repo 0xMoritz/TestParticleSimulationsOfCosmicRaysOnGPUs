@@ -11,9 +11,10 @@
 #include "global.h"
 
 
-/*!
- * Object for writing content to a file. A Printer Object is bound to one file,
- * that should be closed before destruction.
+/*! \brief Object for writing content to a file.
+ *
+ * A Printer Object is bound to one file, that should be closed before destruction.
+ * Contents can be passed as vectors (or plain text) and will be written as one line of a .csv file.
  */
 class Printer
 {

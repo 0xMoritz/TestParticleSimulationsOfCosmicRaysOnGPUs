@@ -12,6 +12,13 @@
 #include "Printer.h"
 #include "FieldGenerator.h"
 
+/*! \brief Base class for ODE solver algorithms
+ *
+ * Unified framwork for numerical integration solvers. Calling @ref Simulation simulates a particles
+ * - given all the properties in the constructor - by employing the @ref Step method. @ref Step is a pure
+ * virtual member and is implemented in the derived classes. Only for the @ref BoostSolver, @ref Simulation
+ * will also be overwritten to account for the workings of the boost library.
+ */
 class Engine
 {
 protected:
