@@ -167,9 +167,6 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 
 	// prepare q0 vector
 	Vec q0Vec(6*particleCount);
-	//cout << "maxVecSize=" << std::vector<T>::max_size() << endl;
-	//cout << "maxdoubleVecSize=" << q0Vec.max_size() << endl;
-	//cout << "len(q0Vec)=" << q0Vec.size() << endl;
 	for (int n = 0; n < particleCount; n++)
 	{
 		if (particleCount > 1) // if only one particle is simulated q0 will be set from outside
@@ -197,7 +194,7 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 
 	T t2 = 0; // Time steps, one integration call integrates from t1 to t2
 	T t1 = 0;
-	T timeStep = 0; // linear or logarithmic
+	T timeStep = 0; // linear or logarithmic increase in time
 	if (logTime)
 	{
 		t1 = 1/(omega);
@@ -229,19 +226,19 @@ float BoostSolver::Simulation(vector<Vec>& trajectory_, Vec& time_, int batchNo)
 
 		//Use this for background Field
 		//T time = boost::numeric::odeint::integrate_n_steps(stepper, lorentzForce, q, (T)0., dt, (size_t)stepsPerOutput);//, observer);
-		T t1_ = t1; // This integration step start time
-		T t2_ = t2; // This integration step end time
-		T dt_ = dt; // For reducing the step size at the beginning to resolve the time before one gyroperiod
-		if (t1*omega < 6)
-		{
-			dt_ = min((t2-t1)/20., dt);
-		}
 		//T T_ = 2*M_PI/omega;
-		size_t steps = boost::numeric::odeint::integrate_const(stepper, lorentzForce, q, t1_, t2_, dt_);
-		//cout << "T, t1, t2, t1_, t2_, dt, dt_, steps " << T_ << ", " << t1 << ", " << t2 << ", " << t1_ << ", " << t2_ << ", " << dt << ", " << dt_ << ", " << steps << endl;
-		//cout << "q0, q1, q2 " << q[0] << ", " << q[1] << ", " << q[2] << endl;
-		//cout << "steps, stepsPerOutput" << steps << ", " << stepsPerOutput << endl;
 
+		// ensure that the integration steps > 0
+		T dt_ = dt;
+		if (t2-t1 < dt)
+		{
+			dt_ = t2-t1;
+		}
+
+		// Perform integration
+		size_t steps = boost::numeric::odeint::integrate_const(stepper, lorentzForce, q, t1, t2, dt_);
+
+		// Increase time
 		t1 = t2;
 	}
 	cout << "totalSimulationTime = " << totalSimulationTime << ", actualSimulationTime = " << t1 << endl;

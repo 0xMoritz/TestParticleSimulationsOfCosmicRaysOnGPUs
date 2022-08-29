@@ -15,20 +15,20 @@
 class Engine
 {
 protected:
-	const T totalSimulationTime; 					//!< total time the particle should be simulated
-	const int outputPoints;								//!< amount of positions recorded in the output file
-	const int stepsPerOutput;							//!< integration steps per output point of the file
-	const T dt; 													//!< \f$\left[\mathrm{pc}\cdot c^{-1}\right]\f$ time step
-	const T R_inverse; 										//!< \f$\left[\mu\mathrm{G}^{-1}\cdot \mathrm{pc}^{-1}\right]\f$ Inverse rigidity \f$ \frac{1}{R}\f$
-	const T V; 														//!< \f$\left[c\right]\f$ absolute velocity
-	Vec q0 = {0,0,0,0,0,0};								//!< Initial state vector
+	const T totalSimulationTime; 			//!< total time the particle should be simulated
+	const int outputPoints;					//!< amount of positions recorded in the output file
+	const int stepsPerOutput;				//!< integration steps per output point of the file
+	const T dt; 							//!< \f$\left[\mathrm{pc}\cdot c^{-1}\right]\f$ time step
+	const T R_inverse; 						//!< \f$\left[\mu\mathrm{G}^{-1}\cdot \mathrm{pc}^{-1}\right]\f$ Inverse rigidity \f$ \frac{1}{R}\f$
+	const T V; 								//!< \f$\left[c\right]\f$ absolute velocity
+	Vec q0 = {0,0,0,0,0,0};					//!< Initial state vector
 	std::string name = ">>>MISSING<<<";		//!< Name of the Numerical solver used
-	const FieldGenerator& field;					//!< Reference to the magnetic field
+	const FieldGenerator& field;			//!< Reference to the magnetic field
 	// members for logarithic output times
-	T firstWriteTime;											//!< time after which the first output point is written
-	T tWrite;															//!< time after which the next output point can be written
-	int numWrites = 0;										//!< recorded output points so far
-  T timePerOutputIncrease;							//!< time that @p tWrite increases after a point has been recorded
+	T firstWriteTime;						//!< time after which the first output point is written
+	T tWrite;								//!< time after which the next output point can be written
+	int numWrites = 0;						//!< recorded output points so far
+	T timePerOutputIncrease;				//!< time that @p tWrite increases after a point has been recorded
 
 	/*! @brief Calculates the derivatives at given state \f$q\f$.
 	 *

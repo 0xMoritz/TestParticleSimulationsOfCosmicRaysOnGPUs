@@ -63,8 +63,8 @@ public:
 struct Observer
 {
 public:
-    std::vector<Vec>& states;
-    Vec& times;
+    std::vector<Vec>& states; //!< reference to a list of states to write the observed trajectory into
+    Vec& times;				  //!<
     Observer(std::vector<Vec>& states_, Vec& times_);
 
 	/*!
