@@ -11,21 +11,22 @@
 #include "Engine.h"
 
 
-/*!
- * Analytic solution of the coupled ODEs as provided by Kuhlen eq.185 ff. for comparison
- * v_perp and v_par are the perpendicular and parallel components of the velocity to the magnetic
- * field
+/*! \brief Engine class to calculate the analytical trajectory of a background field
+ *
+ * Engine-style pseudo-integrator that uses the analytical solution of a particle's trajectory
+ * in a background homogenous magnetic field
  */
 class BackgroundAnalyticSolution : public Engine
 {
 private:
-	T v_perp;
-	T v_par;
-	T OMEGA;
+	T v_perp; //!< velocity perpendicular to magnetic field
+	T v_par;  //!< velocity parallel to magnetic field
+	T OMEGA;  //!< Larmor frequency
 
 public:
 	/*!
-	 * Assuming the initial y-velocity component is zero, and the initial position is 0
+	 * Assuming the initial y-velocity component is zero, and the initial position is 0. Additionally @field is
+	 * assumed to only contain a background component
 	 */
 	BackgroundAnalyticSolution(const T totalSimulationTime_, const int outputPoints_, const int stepsPerOutput_, const T dt, const T R, const T V_, const Vec q0_, FieldGenerator& field, const T omega_);
 

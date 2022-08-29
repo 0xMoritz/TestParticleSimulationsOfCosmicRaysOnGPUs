@@ -10,8 +10,9 @@
 
 #include "Engine.h"
 
-/*!
- * Integration solver working by the Euler method, error in  First order of dt: \f$  \mathcal{O}(dt^1)
+/*! \brief Integration solver working by the Euler method
+ *
+ * Implementation of the Euler method, the error is in First order of dt: \f$  \mathcal{O}(dt^1) \f$
  */
 class EulerSolver : public Engine
 {

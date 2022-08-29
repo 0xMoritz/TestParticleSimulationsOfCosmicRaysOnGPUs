@@ -10,9 +10,11 @@
 
 #include "Engine.h"
 
-/*!
- * Integration Engine working by the Runge Kutta method, errors in second or
- * fourth order \f$ \mathcal{O}(h^2), O(h^4) \f$
+/*! \brief Integration Engine working by the Runge Kutta method
+ *
+ * The Runge Kutta method evalutes the right hand side of the system of linear ODEs at multiple points to
+ * increase the order of accuracy. Methods for different accuracies exist. This class implements a second
+ * \f$\mathcal{O}(dt^2)\f$ and fourth order accurate \f$\mathcal{O}(dt^4)\f$ method with conventional coefficients.
  */
 class RungeKuttaSolver : public Engine
 {

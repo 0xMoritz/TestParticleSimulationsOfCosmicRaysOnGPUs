@@ -12,18 +12,21 @@
 
 
 class RandomGen
-/*!
- * Singleton class for generating random numbers
+/*! \brief Singleton class for generating random numbers
+ *
+ * This singleton is created at the start of the program with a seed given in the command line.
+ * Only a single instance exists, which can be accessed by the static @ref GetInstance()
+ * @p RandomGen reliably produces uniformally distributed pseudorandom umbers using a Mersenne twister engine
  */
 {
 // https://gist.github.com/pazdera/1098119
 private:
 	// std::random_device rd;  // Could be used to obtain random number for seed
 	// https://en.cppreference.com/w/cpp/numeric/random/uniform_real_distribution
-	static RandomGen* instance; 									//!< single instance of this class
-	std::mt19937 RdmEngine; 											//!< Mersenne twister engine
-	std::uniform_real_distribution<T> dist_0_2PI; //!< uniform distribution between 0 and 2π
-	std::uniform_real_distribution<T> dist_m1_1;  //!< uniform distribution between -1 and +1
+	static RandomGen* instance; 					//!< single instance of this class
+	std::mt19937 RdmEngine; 						//!< Mersenne twister engine
+	std::uniform_real_distribution<T> dist_0_2PI; 	//!< uniform distribution between 0 and 2π
+	std::uniform_real_distribution<T> dist_m1_1;  	//!< uniform distribution between -1 and +1
 
 	/*
 	 * Private Constructor to create @ref instance.

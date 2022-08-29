@@ -70,5 +70,28 @@ int ParseInput(int argc, char*argv[]); // Forward declaration not necessary
  *      "f" can be used to generate a turbulent magnetic field and evaluate it in a grid box. The data is
  *      saved to a file and can be used for further analysis e.g. using a discrete Fourier transform...
  *
+ * \section state State of the project
+ *      The generation of fields has been thoroughly tested in the thesis. The core function of simulating test
+ *      particles in isotropic turbulence is working properly.
  *
+ *      However, some aspects can be improved:
+ *          - The conventional implementation of
+ *      Runge Kutta fourth order performs worse than the implementation by the library. This might be because
+ *      of the choice of coordinates but there might be more to it.
+ *          - Still from the process of developement, some passing of parameters is inefficient or unnecessary. One
+ *      might frown upon the parameters needed for some functions and is encouraged to do some optimization him/
+ *      herself.
+ *          - Changing between GPU and CPU is so far only possible by changing comments in global.h, this could be
+ *      much nicer with a compiler directive.
+ *          - Parallelization so far only takes places by simulating many particles in parallel on the same magnetic
+ *      field. Analysis however shows, that for particle numbers of \f$ \sim 10^3 \f$ the GPU's resources are
+ *      not exhausted. The performance could be increased by also parallelizing the computation of multiple
+ *      fields. Yet this will be cumbersome, as the states for different magnetic fields must be nested in
+ *      thrust tuples.
+ *          - Currently the trajecoty of every particle is saved as an individual file, this requires a lot of
+ *      space. For the calculation of
+ *      statistical properties such as the diffusion coefficients, it is more interesting to consider average
+ *      over many particles and field realizations. The averaging process is currently done with python scripts
+ *      but it should be more effective to automate part of the process in this program, e.g. save the mean
+ *      quadratic displacement only.
  */
