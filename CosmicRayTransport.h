@@ -44,7 +44,7 @@ int ParseInput(int argc, char*argv[]); // Forward declaration not necessary
  * 		which utilizes thrust. Both must be installed.
  * 		For compilation the NVCC cuda compiler is required. To yield an advantage with the execution on the GPU,
  * 		the amount of particles should be at least \f$\sim 10^3\f$.
- * 		Generating the documentation requires latex, ghostscript and Doxygen.
+ * 		Generating the documentation requires LaTeX, ghostscript and Doxygen.
  * 		For running on the CPU, the comments in the file @p global.h have to be modified.
  *
  * \subsection compiling Compiling the program
